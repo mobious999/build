@@ -24,7 +24,7 @@
 Import-Module ServerManager
 
 #Check If Backup features Are Already Installed
-$check = Get-WindowsFeature | Where-Object {$_.Name -eq "Windows-Server-Backup"}
+$check = Get-WindowsFeature | Where-Object {$_.Name -eq "Desktop-Experience"}
 If ($check.Installed -ne "True") {
-	Add-WindowsFeature Windows-Server-Backup | Out-Null
+	Add-WindowsFeature Desktop-Experience | Out-Null
 }
