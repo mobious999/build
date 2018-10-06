@@ -6,8 +6,8 @@
   This script will ip the first network card that is connected to the network
 .PARAMETER <Parameter_Name>
     Required fields 
-	Snmp managers
-	Snmp community string for the configuration
+		Snmp managers
+		Snmp community string for the configuration
 .INPUTS
     See above
 .OUTPUTS
@@ -23,10 +23,8 @@
 .EXAMPLE
   Copy the file to the host and begin the Configuration
 #>
-#Powershell Script To Install SNMP Services (SNMP Service, SNMP WMI Provider)
-#Variables :)
-$pmanagers = "ADD YOUR MANAGER(s)"
-$commstring = "ADD YOUR COMM STRING"
+$managers = "Add the snmp managers"
+$commstring = "add the read only community string"
 
 #Import ServerManger Module
 Import-Module ServerManager
@@ -34,17 +32,16 @@ Import-Module ServerManager
 #Check If SNMP Services Are Already Installed
 $check = Get-WindowsFeature | Where-Object {$_.Name -eq "SNMP-Services"}
 If ($check.Installed -ne "True") {
-	#Install/Enable SNMP Services
 	Add-WindowsFeature SNMP-Service | Out-Null
 }
 
-##Verify Windows Servcies Are Enabled
+#Verify Windows Servcies Are Enabled
 If ($check.Installed -eq "True"){
 	#Set SNMP Permitted Manager(s) ** WARNING : This will over write current settings **
 	reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\SNMP\Parameters\PermittedManagers" /v 1 /t REG_SZ /d localhost /f | Out-Null
 	#Used as counter for incremting permitted managers
 	$i = 2
-	Foreach ($manager in $pmanagers){
+	Foreach ($manager in $managers){
 		reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\SNMP\Parameters\PermittedManagers" /v $i /t REG_SZ /d $manager /f | Out-Null
 		$i++
 		}
