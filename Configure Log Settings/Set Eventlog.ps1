@@ -41,23 +41,30 @@ Param(
   [string]$logfolder
 )
 
-
 Try {
   Limit-EventLog -LogName Application -MaximumSize $applicationlog
  }
  
  Catch {
-	$ErrorMessage = $_.Exception.Message
-	$FailedItem = $_.Exception.ItemName
-	Add-Content $logfolder\$errorlog "The deployment failed the error message is" $ErrorMessage
-	Add-Content $logfolder\$errorlog "The deployment failed the item that failed is" $FailedItem		
+  if (!$logfolder -or $errorlog) {
+    Write-Host "No logfile or log folder specified no logging will be created"
+  } else {
+    $ErrorMessage = $_.Exception.Message
+    $FailedItem = $_.Exception.ItemName
+    Add-Content $logfolder\$errorlog "The deployment failed the error message is" $ErrorMessage
+    Add-Content $logfolder\$errorlog "The deployment failed the item that failed is" $FailedItem		    
+  } 
 	Break
  }
  
  Finally {
+  if (!$logfolder -or $logfolder) {
+    Write-Host "No logfile or log folder specified no logging will be created"
+  } else {
     Add-Content $logfolder\$logfile "The vm has passed the diskspace check."
     Add-Content $logfolder\$logfile "The total disk usage for this deployment is $totaldisk"
     Add-Content $logfolder\$logfile "Beginning Main Deployment" 
+  } 
  }
 
  Try {
@@ -65,17 +72,25 @@ Try {
  }
  
  Catch {
-	$ErrorMessage = $_.Exception.Message
-	$FailedItem = $_.Exception.ItemName
-	Add-Content $logfolder\$errorlog "The deployment failed the error message is" $ErrorMessage
-	Add-Content $logfolder\$errorlog "The deployment failed the item that failed is" $FailedItem		
+  if (!$logfile -or $errorlog) {
+    Write-Host "No logfile or log folder specified no logging will be created"
+  } else {
+    $ErrorMessage = $_.Exception.Message
+    $FailedItem = $_.Exception.ItemName
+    Add-Content $logfolder\$errorlog "The deployment failed the error message is" $ErrorMessage
+    Add-Content $logfolder\$errorlog "The deployment failed the item that failed is" $FailedItem		
+  } 
 	Break
  }
  
  Finally {
+  if (!$logfile -or $logfolder) {
+    Write-Host "No logfile or log folder specified no logging will be created"
+  } else {
     Add-Content $logfolder\$logfile "The vm has passed the diskspace check."
     Add-Content $logfolder\$logfile "The total disk usage for this deployment is $totaldisk"
     Add-Content $logfolder\$logfile "Beginning Main Deployment" 
+  } 
  }
 
  Try {
@@ -83,16 +98,22 @@ Try {
  }
  
  Catch {
-	$ErrorMessage = $_.Exception.Message
-  $FailedItem = $_.Exception.ItemName
-  if 
+  if (!$logfile -or $errorlog) {
+    Write-Host "No logfile or log folder specified no logging will be created"
+  } else {
+    $ErrorMessage = $_.Exception.Message
+    $FailedItem = $_.Exception.ItemName
     Add-Content $logfolder\$errorlog "The deployment failed the error message is" $ErrorMessage
     Add-Content $logfolder\$errorlog "The deployment failed the item that failed is" $FailedItem		
-	Break
+  } 
  }
  
  Finally {
+  if (!$logfile -or $logfolder) {
+    Write-Host "No logfile or log folder specified no logging will be created"
+  } else {
     Add-Content $logfolder\$logfile "The vm has passed the diskspace check."
     Add-Content $logfolder\$logfile "The total disk usage for this deployment is $totaldisk"
     Add-Content $logfolder\$logfile "Beginning Main Deployment" 
+  } 
  }
