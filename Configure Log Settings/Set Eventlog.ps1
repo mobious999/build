@@ -6,6 +6,9 @@
   
 .PARAMETER <Parameter_Name>
     Required fields (none)
+    $applicationlog (size in meg)
+    $securitylog (size in meg)
+    $systemlog (size in meg)
 .INPUTS
     Not really required but tailor them to your environment
 .OUTPUTS

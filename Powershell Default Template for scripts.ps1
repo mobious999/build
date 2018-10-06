@@ -1,13 +1,13 @@
 #requires -version 2
 <#
 .SYNOPSIS
-  This script can be used to configure the windows event logs
+  This script can be used to (insert what it does here)
 .DESCRIPTION
   
 .PARAMETER <Parameter_Name>
-    Required fields (none)
+    List all parameters here
 .INPUTS
-    Not really required but tailor them to your environment
+    List all inputs here
 .OUTPUTS
     
 .NOTES
@@ -23,13 +23,13 @@
 
 Param(
   [Parameter(Mandatory=$True,Position=1)]
-  [string]$applicationlog,
+  [string]$parameter1,
 	
   [Parameter(Mandatory=$True)]
-  [string]$securitylog,
+  [string]$parameter2,
 
   [Parameter(Mandatory=$True)]
-  [string]$systemlog,
+  [string]$parameter3,
 
   [Parameter(Mandatory=$True)]
   [string]$errorlog,
@@ -43,20 +43,27 @@ Param(
 
 
 Try {
-
- 
+  
  }
  
  Catch {
-	$ErrorMessage = $_.Exception.Message
-	$FailedItem = $_.Exception.ItemName
-	Add-Content $logfolder\$errorlog "The deployment failed the error message is" $ErrorMessage
-	Add-Content $logfolder\$errorlog "The deployment failed the item that failed is" $FailedItem		
+  if (!$logfolder -or $errorlog) {
+    Write-Host "No logfile or log folder specified no logging will be created"
+  } else {
+    $ErrorMessage = $_.Exception.Message
+    $FailedItem = $_.Exception.ItemName
+    Add-Content $logfolder\$errorlog "The deployment failed the error message is" $ErrorMessage
+    Add-Content $logfolder\$errorlog "The deployment failed the item that failed is" $FailedItem		    
+  } 
 	Break
  }
  
  Finally {
+  if (!$logfolder -or $logfolder) {
+    Write-Host "No logfile or log folder specified no logging will be created"
+  } else {
     Add-Content $logfolder\$logfile "The vm has passed the diskspace check."
     Add-Content $logfolder\$logfile "The total disk usage for this deployment is $totaldisk"
     Add-Content $logfolder\$logfile "Beginning Main Deployment" 
+  } 
  }

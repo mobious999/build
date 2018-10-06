@@ -1,13 +1,13 @@
 #requires -version 2
 <#
 .SYNOPSIS
-  This script can be used to configure the windows event logs
+  This script can be used to add a local user account
 .DESCRIPTION
   
 .PARAMETER <Parameter_Name>
-    Required fields (none)
+    See the example below
 .INPUTS
-    Not really required but tailor them to your environment
+    See the example below
 .OUTPUTS
     
 .NOTES
@@ -16,7 +16,7 @@
   Creation Date:  9/30/2018
   Purpose/Change: Initial script development
   Based on this article
-  
+  https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.localaccounts/new-localuser?view=powershell-5.1
 .EXAMPLE
   .\add local user -name (name) -password (password) -Accountexpires (date) -confirm $false -description (description of the user) -disabled (true / false) -fullname "name of user" -passwordneverexpires (true/false) -$UserMayNotChangePassword (true/false)
 #>
@@ -69,12 +69,11 @@ Try {
 Catch {
 	$ErrorMessage = $_.Exception.Message
 	$FailedItem = $_.Exception.ItemName
-	Add-Content $logfolder\$errorlog "The deployment failed the error message is" $ErrorMessage
-	Add-Content $logfolder\$errorlog "The deployment failed the item that failed is" $FailedItem		
+	Add-Content $logfolder\$errorlog "The user has not been created the error message is" $ErrorMessage
+	Add-Content $logfolder\$errorlog "The the item that failed is" $FailedItem		
 	Break
 }
  
  Finally {
-    Add-Content $logfolder\$logfile "The vm has passed the diskspace check."
-    Add-Content $logfolder\$logfile "The total disk usage for this deployment is $totaldisk"
+    Add-Content $logfolder\$logfile "The user has been created succesfully."
 }
