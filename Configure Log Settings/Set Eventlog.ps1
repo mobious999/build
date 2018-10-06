@@ -104,9 +104,10 @@ Try {
     $ErrorMessage = $_.Exception.Message
     $FailedItem = $_.Exception.ItemName
     Add-Content $logfolder\$errorlog "The deployment failed the error message is" $ErrorMessage
-    Add-Content $logfolder\$errorlog "The deployment failed the item that failed is" $FailedItem		
+    Add-Content $logfolder\$errorlog "The deployment failed the item that failed is" $FailedItem	
   } 
- }
+  Break
+}
  
  Finally {
   if (!$logfile -or $logfolder) {
