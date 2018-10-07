@@ -1,4 +1,4 @@
-#requires -version 2
+#requires -version 5.1
 <#
 .SYNOPSIS
   This script can be used to (insert what it does here)
@@ -29,13 +29,13 @@
 #>
 
 Param(
-  [Parameter(Mandatory=$True,Position=1)]
+  [Parameter(Mandatory=$False,Position=1)]
   [string]$parameter1,
 	
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$False)]
   [string]$parameter2,
 
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$False)]
   [string]$parameter3,
 
   [Parameter(Mandatory=$False)]

@@ -6,78 +6,119 @@
   
 .PARAMETER <Parameter_Name>
     List all parameters here
-    Confirm
     AuthType <ADAuthType>
     Credential <PSCredential>
-    Identity <ADGroup>
-    Members <ADPrincipal[>
-    MemberTimeToLive <TimeSpan>
-    Partition <String>
+    Description <String>
+    DisplayName <String>
+    GroupCategory <ADGroupCategory>
+    GroupScope <ADGroupScope>
+    HomePage <String>
+    Instance <ADGroup>
+    ManagedBy <ADPrincipal>
+    Name <String>
+    OtherAttributes <Hashtable>
     PassThru
+    Path <String>
+    SamAccountName <String>
     Server <String>
-    $errorlog - the log that gets created on a trapped error
-    $logfile - the log of the action and completion
-    $logfolder - where the logs get created
+    $errorlog
+    $logfile
+    $logfolder
 .INPUTS
     List all inputs here
-    $Confirm
-    $AuthType <ADAuthType>
-    $Credential <PSCredential>
-    $Identity <ADGroup>
-    $Members <ADPrincipal[>
-    $MemberTimeToLive <TimeSpan>
-    $Partition <String>
-    $PassThru
-    $Server <String>
+    AuthType <ADAuthType>
+      Negotiate or 0
+      Basic or 1
+    Credential <PSCredential>
+    Description <String>
+    DisplayName <String>
+    GroupCategory <ADGroupCategory>
+      Distribution or 0
+      Security or 1
+    GroupScope <ADGroupScope>
+      DomainLocal or 0
+      Global or 1
+      Universal or 2
+    HomePage <String>
+    Instance <ADGroup>
+    ManagedBy <ADPrincipal>
+      A distinguished name
+      A GUID (objectGUID)
+      A security identifier (objectSid)
+      SAM account name (sAMAccountName)
+    Name <String>
+    OtherAttributes <Hashtable>
+      To specify a single value for an attribute:
+      -OtherAttributes @{'AttributeLDAPDisplayName'=value}
+      To specify multiple values for an attribute
+      -OtherAttributes @{'AttributeLDAPDisplayName'=value1,value2,...}
+    PassThru
+    Path <String>
+    SamAccountName <String>
+    Server <String>
+    Domain name values:
+      Fully qualified domain name
+      NetBIOS name
+      Directory server values:
+
+      Fully qualified directory server name
+      NetBIOS name
+      Fully qualified directory server name and port
     $errorlog - the log that gets created on a trapped error
     $logfile - the log of the action and completion
     $logfolder - where the logs get created
+
 .OUTPUTS
-    Logging where required just add the log variables
+    Logging Where required see below for how to enable    
 .NOTES
-  Version:        1.0
-  Author:         Mark Quinn
-  Creation Date:  9/30/2018
-  Purpose/Change: Initial script development
-  Based on this article
-  https://docs.microsoft.com/en-us/powershell/module/addsadministration/add-adgroupmember?view=win10-ps
+    Version:        1.0
+    Author:         Mark Quinn
+    Creation Date:  9/30/2018
+    Purpose/Change: Initial script development
+    Based on this article
+    https://docs.microsoft.com/en-us/powershell/module/addsadministration/new-adgroup?view=win10-ps
 .EXAMPLE
-  Copy the file to the host and begin the Configuration
-  Example 1: Add specified user accounts to a group
-  Add-ADGroupMember -Identity SvcAccPSOGroup -Members SQL01,SQL02
-  Example 2: Add all user accounts to a group
-  Add-ADGroupMember
-  cmdlet Add-ADGroupMember at command pipeline position 1
-  Supply values for the following parameters: 
-  Identity: RodcAdmins
-  Members[0]: DavidChew
-  Members[1]: PattiFuller
-  Members[2]:
-  Example 3: Add an account by distinguished name to a filtered group
-  Get-ADGroup -Server localhost:60000 -SearchBase "OU=AccountDeptOU,DC=AppNC" -Filter { name -like "AccountLeads" } | Add-ADGroupMember -Members "CN=PattiFuller,OU=AccountDeptOU,DC=AppNC"
-  Example 4: Add a user from a domain to a group in another domain
-  $User = Get-ADUser -Identity "CN=Chew David,OU=UserAccounts,DC=NORTHAMERICA,DC=FABRIKAM,DC=COM" -Server "northamerica.fabrikam.com"
-  $Group = Get-ADGroup -Identity "CN=AccountLeads,OU=UserAccounts,DC=EUROPE,DC=FABRIKAM,DC=COM" -Server "europe.fabrikam.com"
-  Add-ADGroupMember -Identity $Group -Members $User -Server "europe.fabrikam.com"
+  Example 1: Create a group and set its properties
+  New-ADGroup -Name "RODC Admins" -SamAccountName RODCAdmins -GroupCategory Security -GroupScope Global -DisplayName "RODC Administrators" -Path "CN=Users,DC=Fabrikam,DC=Com" -Description "Members of this group are RODC Administrators"
+  Example 2: Create a group using existing property values
+  Get-ADGroup FabrikamBranch1 -Properties Description | New-ADGroup -Name "Branch1Employees" -SamAccountName "Branch1Employees" -GroupCategory Distribution -PassThru 
+  Example 3: Create a group on an LDS instance
+  New-ADGroup -Server localhost:60000 -Path "OU=AccountDeptOU,DC=AppNC" -Name "AccountLeads" -GroupScope DomainLocal -GroupCategory Distribution
   To add error logging add the following parameters from below
   -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
 #>
 
 Param(
   [Parameter(Mandatory=$False,Position=1)]
+  [string]$parameter1,
+  [Parameter(Mandatory=$False)]
   [string]$AuthType,
   [Parameter(Mandatory=$False)]
   [SecureString]$Credential,
   [Parameter(Mandatory=$False)]
-  [string]$Identity,
+  [string]$Description,
   [Parameter(Mandatory=$False)]
-  [string]$Members,
+  [string]$DisplayName,
   [Parameter(Mandatory=$False)]
-  [string]$MemberTimeToLive,
+  [string]$GroupCategory,
   [Parameter(Mandatory=$False)]
-  [string]$Partition,
+  [string]$GroupScope,
+  [Parameter(Mandatory=$True)]
+  [string]$HomePage,
+  [Parameter(Mandatory=$False)]
+  [string]$Instance,
+  [Parameter(Mandatory=$False)]
+  [string]$ManagedBy,
+  [Parameter(Mandatory=$True)]
+  [string]$Name,
+  [Parameter(Mandatory=$False)]
+  [string]$OtherAttributes,
   [Parameter(Mandatory=$False)]
   [string]$PassThru,
+  [Parameter(Mandatory=$False)]
+  [string]$Path,
+  [Parameter(Mandatory=$False)]
+  [string]$SamAccountName,
   [Parameter(Mandatory=$False)]
   [string]$Server,
   [Parameter(Mandatory=$False)]
@@ -90,7 +131,7 @@ Param(
 
 
 Try {
-  Add-ADGroupMember -Identity SvcAccPSOGroup -Members SQL01,SQL02
+  New-ADGroup -Name $name -SamAccountName $SamAccountName -GroupCategory $groupcategory -GroupScope $groupscope -DisplayName $DisplayName -Path $path -Description $Description
  }
  
  Catch {
@@ -109,8 +150,7 @@ Try {
   if (!$logfolder -or $logfolder) {
     Write-Host "No logfile or log folder specified no logging will be created"
   } else {
-    Add-Content $logfolder\$logfile "The vm has passed the diskspace check."
-    Add-Content $logfolder\$logfile "The total disk usage for this deployment is $totaldisk"
-    Add-Content $logfolder\$logfile "Beginning Main Deployment" 
+    Add-Content $logfolder\$logfile "The action completed succesfully."
+    Add-Content $logfolder\$logfile "The total disk usage for this deployment is " $totaldisk
   } 
  }

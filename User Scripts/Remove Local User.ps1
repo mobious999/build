@@ -32,13 +32,13 @@ Param(
   [Parameter(Mandatory=$True,Position=1)]
   [string]$name,
 	
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$False)]
   [string]$errorlog,
 
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$False)]
   [string]$logfile,
 
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$False)]
   [string]$logfolder
 )
 

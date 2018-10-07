@@ -6,10 +6,25 @@
   
 .PARAMETER <Parameter_Name>
     List all parameters here
+    Group
+    Member
+    Name
+    SID
+    $errorlog - the log that gets created on a trapped error
+    $logfile - the log of the action and completion
+    $logfolder - where the logs get created
 .INPUTS
     List all inputs here
+    Group
+    Member
+    Name
+    SID
+    $errorlog - the log that gets created on a trapped error
+    $logfile - the log of the action and completion
+    $logfolder - where the logs get created
+
 .OUTPUTS
-    
+    Logging where required see the below parameter line to add to a command
 .NOTES
   Version:        1.0
   Author:         Mark Quinn
@@ -18,32 +33,33 @@
   Based on this article
   
 .EXAMPLE
-  Copy the file to the host and begin the Configuration
+  Example 1: Add members to the Administrators group
+  Add-LocalGroupMember -Group "Administrators" -Member "Admin02", "MicrosoftAccount\username@Outlook.com", "AzureAD\DavidChew@contoso.com", "CONTOSO\Domain Admins"
+   To add error logging add the following parameters from below
+  -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
 #>
 
 Param(
   [Parameter(Mandatory=$True,Position=1)]
-  [string]$parameter1,
-	
-  [Parameter(Mandatory=$True)]
-  [string]$parameter2,
+  [string]$Group,
 
-  [Parameter(Mandatory=$True)]
-  [string]$parameter3,
-
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$False)]
+  [string]$Member,
+  [Parameter(Mandatory=$False)]
+  [string]$Name,
+  [Parameter(Mandatory=$False)]
+  [string]$SID,
+  [Parameter(Mandatory=$False)]
   [string]$errorlog,
-
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$False)]
   [string]$logfile,
-
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$False)]
   [string]$logfolder
 )
 
 
 Try {
-  
+  Add-LocalGroupMember -Group $group -Member $member
  }
  
  Catch {
