@@ -6,10 +6,134 @@
   
 .PARAMETER <Parameter_Name>
     List all parameters here
+    Confirm
+    AccountExpirationDate <DateTime>
+    AccountNotDelegated <Boolean>
+    AccountPassword <SecureString>
+    AllowReversiblePasswordEncryption <Boolean>
+    AuthenticationPolicy <ADAuthenticationPolicy>
+    AuthenticationPolicySilo <ADAuthenticationPolicySilo>
+    AuthType <ADAuthType>
+    CannotChangePassword <Boolean>
+    Certificates <X509Certificate[>
+    ChangePasswordAtLogon <Boolean>
+    City <String>
+    Company <String>
+    CompoundIdentitySupported <Boolean>
+    Country <String>
+    Credential <PSCredential>
+    Department <String>
+    Description <String>
+    DisplayName <String>
+    Division <String>
+    EmailAddress <String>
+    EmployeeID <String>
+    EmployeeNumber <String>
+    Enabled <Boolean>
+    Fax <String>
+    GivenName <String>
+    HomeDirectory <String>
+    HomeDrive <String>
+    HomePage <String>
+    HomePhone <String>
+    Initials <String>
+    Instance <ADUser>
+    KerberosEncryptionType <ADKerberosEncryptionType>
+    LogonWorkstations <String>
+    Manager <ADUser>
+    MobilePhone <String>
+    Name <String>
+    Office <String>
+    OfficePhone <String>
+    Organization <String>
+    OtherAttributes <Hashtable>
+    OtherName <String>
+    PassThru
+    PasswordNeverExpires <Boolean>
+    PasswordNotRequired <Boolean>
+    Path <String>
+    POBox <String>
+    PostalCode <String>
+    PrincipalsAllowedToDelegateToAccount <ADPrincipal[>
+    ProfilePath <String>
+    SamAccountName <String>
+    ScriptPath <String>
+    Server <String>
+    ServicePrincipalNames <String[>
+    SmartcardLogonRequired <Boolean>
+    State <String>
+    StreetAddress <String>
+    Surname <String>
+    Title <String>
+    TrustedForDelegation <Boolean>
+    Type <String>
+    UserPrincipalName <String>
 .INPUTS
     List all inputs here
+    Confirm
+    AccountExpirationDate <DateTime>
+    AccountNotDelegated <Boolean>
+    AccountPassword <SecureString>
+    AllowReversiblePasswordEncryption <Boolean>
+    AuthenticationPolicy <ADAuthenticationPolicy>
+    AuthenticationPolicySilo <ADAuthenticationPolicySilo>
+    AuthType <ADAuthType>
+    CannotChangePassword <Boolean>
+    Certificates <X509Certificate[>
+    ChangePasswordAtLogon <Boolean>
+    City <String>
+    Company <String>
+    CompoundIdentitySupported <Boolean>
+    Country <String>
+    Credential <PSCredential>
+    Department <String>
+    Description <String>
+    DisplayName <String>
+    Division <String>
+    EmailAddress <String>
+    EmployeeID <String>
+    EmployeeNumber <String>
+    Enabled <Boolean>
+    Fax <String>
+    GivenName <String>
+    HomeDirectory <String>
+    HomeDrive <String>
+    HomePage <String>
+    HomePhone <String>
+    Initials <String>
+    Instance <ADUser>
+    KerberosEncryptionType <ADKerberosEncryptionType>
+    LogonWorkstations <String>
+    Manager <ADUser>
+    MobilePhone <String>
+    Name <String>
+    Office <String>
+    OfficePhone <String>
+    Organization <String>
+    OtherAttributes <Hashtable>
+    OtherName <String>
+    PassThru
+    PasswordNeverExpires <Boolean>
+    PasswordNotRequired <Boolean>
+    Path <String>
+    POBox <String>
+    PostalCode <String>
+    PrincipalsAllowedToDelegateToAccount <ADPrincipal[>
+    ProfilePath <String>
+    SamAccountName <String>
+    ScriptPath <String>
+    Server <String>
+    ServicePrincipalNames <String[>
+    SmartcardLogonRequired <Boolean>
+    State <String>
+    StreetAddress <String>
+    Surname <String>
+    Title <String>
+    TrustedForDelegation <Boolean>
+    Type <String>
+    UserPrincipalName <String>
 .OUTPUTS
-    
+    Standard output if logs are specified    
 .NOTES
   Version:        1.0
   Author:         Mark Quinn
@@ -31,16 +155,15 @@ Param(
   [Parameter(Mandatory=$True)]
   [string]$parameter3,
 
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$false)]
   [string]$errorlog,
 
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$false)]
   [string]$logfile,
 
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$false)]
   [string]$logfolder
 )
-
 
 Try {
   

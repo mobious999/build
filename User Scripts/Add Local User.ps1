@@ -6,8 +6,24 @@
   
 .PARAMETER <Parameter_Name>
     See the example below
+    $name
+    $password
+    $Accountexpires
+    $Accountneverexpires
+    $confirm
+    $description
+    $disabled
+    $fullname
+    $passwordneverexpires
+    $usermaynotchangepassword
+    $errorlog
+    $logfile
+    $logfolder
 .INPUTS
     See the example below
+    $errorlog - the log that gets created on a trapped error
+    $logfile - the log of the action and completion
+    $logfolder - where the logs get created
 .OUTPUTS
     
 .NOTES
@@ -18,7 +34,7 @@
   Based on this article
   https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.localaccounts/new-localuser?view=powershell-5.1
 .EXAMPLE
-  .\add local user -name (name) -password (password) -Accountexpires (date) -confirm $false -description (description of the user) -disabled (true / false) -fullname "name of user" -passwordneverexpires (true/false) -$UserMayNotChangePassword (true/false)
+  .\add local user -name (name) -password (password) -Accountexpires (date) -confirm $false -description (description of the user) -disabled (true / false) -fullname "name of user" -passwordneverexpires (true/false) -$UserMayNotChangePassword (true/false) -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
 #>
 
 Param(
@@ -31,7 +47,7 @@ Param(
   [Parameter(Mandatory=$True)]
   [string]$AccountExpires,
 
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$False)]
   [string]$AccountNeverExpires,
 
   [Parameter(Mandatory=$True)]
@@ -40,25 +56,25 @@ Param(
   [Parameter(Mandatory=$True)]
   [string]$Description,
 
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$False)]
   [string]$Disabled,
 
   [Parameter(Mandatory=$True)]
   [string]$FullName,
 
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$False)]
   [Securestring]$PasswordNeverExpires,
 
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$False)]
   [Securestring]$UserMayNotChangePassword,
 
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$False)]
   [string]$errorlog,
 
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$False)]
   [string]$logfile,
 
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$False)]
   [string]$logfolder
 )
 

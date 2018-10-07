@@ -6,8 +6,14 @@
   
 .PARAMETER <Parameter_Name>
     List all parameters here
+    $errorlog
+    $logfile
+    $logfolder
 .INPUTS
     List all inputs here
+    $errorlog - the log that gets created on a trapped error
+    $logfile - the log of the action and completion
+    $logfolder - where the logs get created
 .OUTPUTS
     
 .NOTES
@@ -18,7 +24,7 @@
   Based on this article
   
 .EXAMPLE
-  Copy the file to the host and begin the Configuration
+  -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
 #>
 
 Param(
@@ -31,13 +37,13 @@ Param(
   [Parameter(Mandatory=$True)]
   [string]$parameter3,
 
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$False)]
   [string]$errorlog,
 
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$False)]
   [string]$logfile,
 
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$False)]
   [string]$logfolder
 )
 
@@ -62,8 +68,7 @@ Try {
   if (!$logfolder -or $logfolder) {
     Write-Host "No logfile or log folder specified no logging will be created"
   } else {
-    Add-Content $logfolder\$logfile "The vm has passed the diskspace check."
-    Add-Content $logfolder\$logfile "The total disk usage for this deployment is $totaldisk"
-    Add-Content $logfolder\$logfile "Beginning Main Deployment" 
+    Add-Content $logfolder\$logfile "The action completed succesfully."
+    Add-Content $logfolder\$logfile "The total disk usage for this deployment is " $totaldisk
   } 
  }
