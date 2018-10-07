@@ -6,6 +6,7 @@
   
 .PARAMETER <Parameter_Name>
     List all parameters here
+    Name
     Confirm
     AccountExpirationDate <DateTime>
     AccountNotDelegated <Boolean>
@@ -70,6 +71,7 @@
     UserPrincipalName <String>
 .INPUTS
     List all inputs here
+    Name
     Confirm
     AccountExpirationDate <DateTime>
     AccountNotDelegated <Boolean>
@@ -147,20 +149,131 @@
 
 Param(
   [Parameter(Mandatory=$True,Position=1)]
-  [string]$parameter1,
-	
+  [string]$name,
+  [Parameter(Mandatory=$False)]
+  [string]$Confirm,
+  [Parameter(Mandatory=$False)]
+  [string]$AccountExpirationDate,
+  [Parameter(Mandatory=$False)]
+  [string]$AccountNotDelegated,
   [Parameter(Mandatory=$True)]
-  [string]$parameter2,
-
+  [securestring]$AccountPassword,
+  [Parameter(Mandatory=$False)]
+  [securestring]$AllowReversiblePasswordEncryption,
+  [Parameter(Mandatory=$False)]
+  [string]$AuthenticationPolicy,
+  [Parameter(Mandatory=$False)]
+  [string]$AuthenticationPolicySilo,
+  [Parameter(Mandatory=$False)]
+  [string]$AuthType,
+  [Parameter(Mandatory=$False)]
+  [securestring]$CannotChangePassword,
+  [Parameter(Mandatory=$False)]
+  [securestring]$Certificates,
+  [Parameter(Mandatory=$False)]
+  [SecureString]$ChangePasswordAtLogon,
+  [Parameter(Mandatory=$False)]
+  [string]$City,
+  [Parameter(Mandatory=$False)]
+  [string]$Company,
+  [Parameter(Mandatory=$False)]
+  [string]$CompoundIdentitySupported,
+  [Parameter(Mandatory=$False)]
+  [string]$Country,
+  [Parameter(Mandatory=$False)]
+  [SecureString]$Credential,
+  [Parameter(Mandatory=$False)]
+  [string]$Department,
+  [Parameter(Mandatory=$False)]
+  [string]$Description,
+  [Parameter(Mandatory=$False)]
+  [string]$DisplayName,
+  [Parameter(Mandatory=$False)]
+  [string]$Division,
   [Parameter(Mandatory=$True)]
-  [string]$parameter3,
-
+  [string]$EmailAddress,
+  [Parameter(Mandatory=$False)]
+  [string]$EmployeeID,
+  [Parameter(Mandatory=$False)]
+  [string]$EmployeeNumber,
+  [Parameter(Mandatory=$True)]
+  [string]$Enabled,
+  [Parameter(Mandatory=$False)]
+  [string]$Fax,
+  [Parameter(Mandatory=$False)]
+  [string]$GivenName,
+  [Parameter(Mandatory=$False)]
+  [string]$HomeDirectory,
+  [Parameter(Mandatory=$False)]
+  [string]$HomeDrive,
+  [Parameter(Mandatory=$False)]
+  [string]$HomePage,
+  [Parameter(Mandatory=$False)]
+  [string]$HomePhone,
+  [Parameter(Mandatory=$False)]
+  [string]$Initials,
+  [Parameter(Mandatory=$False)]
+  [string]$Instance,
+  [Parameter(Mandatory=$False)]
+  [string]$KerberosEncryptionType,
+  [Parameter(Mandatory=$False)]
+  [string]$LogonWorkstations,
+  [Parameter(Mandatory=$False)]
+  [string]$Manager,
+  [Parameter(Mandatory=$False)]
+  [string]$MobilePhone,
+  [Parameter(Mandatory=$False)]
+  [string]$Office,
+  [Parameter(Mandatory=$False)]
+  [string]$OfficePhone,
+  [Parameter(Mandatory=$False)]
+  [string]$Organization,
+  [Parameter(Mandatory=$False)]
+  [string]$OtherName,
+  [Parameter(Mandatory=$False)]
+  [string]$PassThru,
+  [Parameter(Mandatory=$False)]
+  [string]$PasswordNeverExpires,
+  [Parameter(Mandatory=$False)]
+  [string]$PasswordNotRequired,
+  [Parameter(Mandatory=$False)]
+  [string]$Path,
+  [Parameter(Mandatory=$False)]
+  [string]$POBox,
+  [Parameter(Mandatory=$False)]
+  [string]$PostalCode,
+  [Parameter(Mandatory=$False)]
+  [string]$PrincipalsAllowedToDelegateToAccount,
+  [Parameter(Mandatory=$False)]
+  [string]$ProfilePath,
+  [Parameter(Mandatory=$False)]
+  [string]$SamAccountName,
+  [Parameter(Mandatory=$False)]
+  [string]$ScriptPath,
+  [Parameter(Mandatory=$False)]
+  [string]$Server,
+  [Parameter(Mandatory=$False)]
+  [string]$ServicePrincipalNames,
+  [Parameter(Mandatory=$False)]
+  [string]$SmartcardLogonRequired,
+  [Parameter(Mandatory=$False)]
+  [string]$State,
+  [Parameter(Mandatory=$False)]
+  [string]$StreetAddress,
+  [Parameter(Mandatory=$False)]
+  [string]$Surname,
+  [Parameter(Mandatory=$False)]
+  [string]$Title,
+  [Parameter(Mandatory=$False)]
+  [string]$TrustedForDelegation,
+  [Parameter(Mandatory=$False)]
+  [string]$Type,
+  [Parameter(Mandatory=$False)]
+  [string]$UserPrincipalName,
   [Parameter(Mandatory=$false)]
   [string]$errorlog,
-
   [Parameter(Mandatory=$false)]
   [string]$logfile,
-
   [Parameter(Mandatory=$false)]
   [string]$logfolder
 )
