@@ -55,7 +55,7 @@ Param(
   [Parameter(Mandatory=$True,Position=1)]
   [string]$name,
 	
-  [Parameter(Mandatory=$False)]
+  [Parameter(Mandatory=$True)]
   [Securestring]$Password,
 
   [Parameter(Mandatory=$False)]

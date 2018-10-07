@@ -1,9 +1,9 @@
-#requires -version 2
+#requires -version 5.1
 <#
 .SYNOPSIS
   This script can be used to (insert what it does here)
 .DESCRIPTION
-  
+  This script can be used to create ad users with all parameters if required also with error logging
 .PARAMETER <Parameter_Name>
     List all parameters here
     Name
@@ -142,9 +142,15 @@
   Creation Date:  9/30/2018
   Purpose/Change: Initial script development
   Based on this article
-  
+  https://docs.microsoft.com/en-us/powershell/module/addsadministration/new-aduser?view=win10-ps
 .EXAMPLE
-  Copy the file to the host and begin the Configuration
+  Create a user with an imported certificate
+  New-ADUser -Name "ChewDavid" -Certificate (New-Object System.Security.Cryptography.X509Certificates.X509Certificate -ArgumentList "Export.cer")
+  Create a user and set properties
+  New-ADUser -Name "ChewDavid" -OtherAttributes @{'title'="director";'mail'="chewdavid@fabrikam.com"}
+  Create an inetOrgPerson user
+  New-ADUser -Name "ChewDavid" -Type iNetOrgPerson -Path "DC=AppNC" -Server lds.Fabrikam.com:50000
+  New-Aduser -name $name -$accountpassword $accountpassword -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
 #>
 
 Param(
@@ -190,13 +196,13 @@ Param(
   [string]$DisplayName,
   [Parameter(Mandatory=$False)]
   [string]$Division,
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$False)]
   [string]$EmailAddress,
   [Parameter(Mandatory=$False)]
   [string]$EmployeeID,
   [Parameter(Mandatory=$False)]
   [string]$EmployeeNumber,
-  [Parameter(Mandatory=$True)]
+  [Parameter(Mandatory=$False)]
   [string]$Enabled,
   [Parameter(Mandatory=$False)]
   [string]$Fax,
@@ -279,7 +285,7 @@ Param(
 )
 
 Try {
-  
+  New-Aduser -name $name -$accountpassword $accountpassword -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
  }
  
  Catch {

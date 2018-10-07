@@ -24,6 +24,7 @@
   Based on this article
   
 .EXAMPLE
+  To add error logging add the following parameters from below
   -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
 #>
 
