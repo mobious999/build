@@ -233,9 +233,9 @@ Param(
   [Parameter(Mandatory=$False)]
   [string]$PassThru,
   [Parameter(Mandatory=$False)]
-  [string]$PasswordNeverExpires,
+  [SecureString]$PasswordNeverExpires,
   [Parameter(Mandatory=$False)]
-  [string]$PasswordNotRequired,
+  [SecureString]$PasswordNotRequired,
   [Parameter(Mandatory=$False)]
   [string]$Path,
   [Parameter(Mandatory=$False)]
