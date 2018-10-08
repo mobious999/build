@@ -1,28 +1,37 @@
-#requires -version 2
+#requires -version 5.1
 <#
 .SYNOPSIS
-  This script can be used to configure the windows event logs
+  This script can be used to Disable Autorun for all users
 .DESCRIPTION
   
 .PARAMETER <Parameter_Name>
-    Required fields (none)
-    $applicationlog (size in meg)
-    $securitylog (size in meg)
-    $systemlog (size in meg)
+    List all parameters here
+    $errorlog
+    $logfile
+    $logfolder
 .INPUTS
-    Not really required but tailor them to your environment
+    List all inputs here
+    $errorlog - the log that gets created on a trapped error
+    $logfile - the log of the action and completion
+    $logfolder - where the logs get created
 .OUTPUTS
     
 .NOTES
   Version:        1.0
   Author:         Mark Quinn
-  Creation Date:  9/30/2018
+  Creation Date:  10/8/2018
   Purpose/Change: Initial script development
   Based on this article
   
 .EXAMPLE
-  .\set eventlog.ps1 -applicationlog (size in meg) -securitylog (size in meg) -systemlog (size in meg) -errorlog (error log name) -logfile (filename for logging) -logfolder (where you want the log to be created)
+  To add error logging add the following parameters from below
+  -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
 #>
+
+#static variables no parameters required
+$registry1 = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\policies\Explorer"
+$registry2 = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\policies\Explorer"
+$autorunfile =  "REGISTRY::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\IniFileMapping\AutoRun.inf"
 If(Test-Path $logfolder)
   {
 	    #write-host "path exists"
@@ -35,15 +44,6 @@ else
   }
   
 Param(
-  [Parameter(Mandatory=$True,Position=1)]
-  [string]$applicationlog,
-	
-  [Parameter(Mandatory=$True)]
-  [string]$securitylog,
-
-  [Parameter(Mandatory=$True)]
-  [string]$systemlog,
-
   [Parameter(Mandatory=$False)]
   [string]$errorlog,
 
@@ -54,8 +54,9 @@ Param(
   [string]$logfolder
 )
 
+
 Try {
-  Limit-EventLog -LogName Application -MaximumSize $applicationlog
+  Set-ItemProperty $registry1 -Name NoDriveTypeAutorun -Type DWord -Value 0xFF  
  }
  
  Catch {
@@ -74,60 +75,61 @@ Try {
   if (!$logfolder -or $logfolder) {
     Write-Host "No logfile or log folder specified no logging will be created"
   } else {
-    Add-Content $logfolder\$logfile "The vm has passed the diskspace check."
-    Add-Content $logfolder\$logfile "The total disk usage for this deployment is $totaldisk"
-    Add-Content $logfolder\$logfile "Beginning Main Deployment" 
+    Add-Content $logfolder\$logfile "The action completed succesfully."
+    Add-Content $logfolder\$logfile "The total disk usage for this deployment is " $totaldisk
   } 
  }
 
  Try {
-  Limit-EventLog -LogName Security -MaximumSize $securitylog
+  Set-ItemProperty $registry2 -Name NoDriveTypeAutorun -Type DWord -Value 0xFF  
  }
  
  Catch {
-  if (!$logfile -or $errorlog) {
+  if (!$logfolder -or $errorlog) {
     Write-Host "No logfile or log folder specified no logging will be created"
   } else {
     $ErrorMessage = $_.Exception.Message
     $FailedItem = $_.Exception.ItemName
     Add-Content $logfolder\$errorlog "The deployment failed the error message is" $ErrorMessage
-    Add-Content $logfolder\$errorlog "The deployment failed the item that failed is" $FailedItem		
+    Add-Content $logfolder\$errorlog "The deployment failed the item that failed is" $FailedItem		    
   } 
 	Break
  }
  
  Finally {
-  if (!$logfile -or $logfolder) {
+  if (!$logfolder -or $logfolder) {
     Write-Host "No logfile or log folder specified no logging will be created"
   } else {
-    Add-Content $logfolder\$logfile "The vm has passed the diskspace check."
-    Add-Content $logfolder\$logfile "The total disk usage for this deployment is $totaldisk"
-    Add-Content $logfolder\$logfile "Beginning Main Deployment" 
+    Add-Content $logfolder\$logfile "The action completed succesfully."
+    Add-Content $logfolder\$logfile "The total disk usage for this deployment is " $totaldisk
   } 
  }
 
+
  Try {
-  Limit-EventLog -LogName Application -MaximumSize $systemlog
+  Set-ItemProperty $autorunfile.PSPath "(default)" "@SYS:DoesNotExist"
  }
  
  Catch {
-  if (!$logfile -or $errorlog) {
+  if (!$logfolder -or $errorlog) {
     Write-Host "No logfile or log folder specified no logging will be created"
   } else {
     $ErrorMessage = $_.Exception.Message
     $FailedItem = $_.Exception.ItemName
     Add-Content $logfolder\$errorlog "The deployment failed the error message is" $ErrorMessage
-    Add-Content $logfolder\$errorlog "The deployment failed the item that failed is" $FailedItem	
+    Add-Content $logfolder\$errorlog "The deployment failed the item that failed is" $FailedItem		    
   } 
-  Break
-}
+	Break
+ }
  
  Finally {
-  if (!$logfile -or $logfolder) {
+  if (!$logfolder -or $logfolder) {
     Write-Host "No logfile or log folder specified no logging will be created"
   } else {
-    Add-Content $logfolder\$logfile "The vm has passed the diskspace check."
-    Add-Content $logfolder\$logfile "The total disk usage for this deployment is $totaldisk"
-    Add-Content $logfolder\$logfile "Beginning Main Deployment" 
+    Add-Content $logfolder\$logfile "The action completed succesfully."
+    Add-Content $logfolder\$logfile "The total disk usage for this deployment is " $totaldisk
   } 
  }
+
+
+ 

@@ -77,6 +77,5 @@ Try {
     Write-Host "No logfile or log folder specified no logging will be created"
   } else {
     Add-Content $logfolder\$logfile "The action completed succesfully."
-    Add-Content $logfolder\$logfile "The total disk usage for this deployment is " $totaldisk
   } 
  }

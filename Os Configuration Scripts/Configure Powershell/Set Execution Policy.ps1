@@ -20,7 +20,21 @@
 .EXAMPLE
   Copy the file to the host and begin the Configuration
 #>
-$logfolder = "c:\buildlog"
+
+Param(
+  [Parameter(Mandatory=$False,Position=1)]
+  [string]$Policy,
+ 
+  [Parameter(Mandatory=$False)]
+  [string]$errorlog,
+
+  [Parameter(Mandatory=$False)]
+  [string]$logfile,
+
+  [Parameter(Mandatory=$False)]
+  [string]$logfolder
+)
+
 If(Test-Path $logfolder)
   	{
 	    #write-host "path exists"
@@ -32,8 +46,6 @@ else
 		New-Item -ItemType Directory -Path $logfolder
     }
   
-$errorlog = "c:\buildlog\error.log"
-$Policy = "RemoteSigned"
 
 Try {
     If ((get-ExecutionPolicy) -ne $Policy) {

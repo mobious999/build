@@ -15,7 +15,7 @@
     $logfile - the log of the action and completion
     $logfolder - where the logs get created
 .OUTPUTS
-    
+    Standard logfiles if enabled
 .NOTES
   Version:        1.0
   Author:         Mark Quinn
@@ -27,6 +27,16 @@
   To add error logging add the following parameters from below
   -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
 #>
+If(Test-Path $logfolder)
+  {
+	    #write-host "path exists"
+	}
+else 
+	{
+		#Write-Host "path doesn't exist"
+		#if the path doesn't exist create it
+		New-Item -ItemType Directory -Path $logfolder
+  }
 
 Param(
   [Parameter(Mandatory=$False,Position=1)]
@@ -59,8 +69,8 @@ Try {
   } else {
     $ErrorMessage = $_.Exception.Message
     $FailedItem = $_.Exception.ItemName
-    Add-Content $logfolder\$errorlog "The deployment failed the error message is" $ErrorMessage
-    Add-Content $logfolder\$errorlog "The deployment failed the item that failed is" $FailedItem		    
+    Add-Content $logfolder\$errorlog "The error message is " $ErrorMessage
+    Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem		    
   } 
 	Break
  }
@@ -70,6 +80,5 @@ Try {
     Write-Host "No logfile or log folder specified no logging will be created"
   } else {
     Add-Content $logfolder\$logfile "The action completed succesfully."
-    Add-Content $logfolder\$logfile "The total disk usage for this deployment is " $totaldisk
   } 
  }
