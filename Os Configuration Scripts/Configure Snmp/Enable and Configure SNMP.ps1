@@ -23,14 +23,14 @@
 .EXAMPLE
   Copy the file to the host and begin the Configuration
 #>
-$managers = "Add the snmp managers"
+$manager1 = "Add the snmp managers"
 $commstring = "add the read only community string"
 
 #Import ServerManger Module
 Import-Module ServerManager
 
 #Check If SNMP Services Are Already Installed
-$check = Get-WindowsFeature | Where-Object {$_.Name -eq "SNMP-Services"}
+	$check = Get-WindowsFeature | Where-Object {$_.Name -eq "SNMP-Services"}
 If ($check.Installed -ne "True") {
 	Add-WindowsFeature SNMP-Service | Out-Null
 }
@@ -39,6 +39,8 @@ If ($check.Installed -ne "True") {
 If ($check.Installed -eq "True"){
 	#Set SNMP Permitted Manager(s) ** WARNING : This will over write current settings **
 	reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\SNMP\Parameters\PermittedManagers" /v 1 /t REG_SZ /d localhost /f | Out-Null
+	Set-ItemProperty ‘HKLM:\SYSTEM\SYSTEM\CurrentControlSet\services\SNMP\Parameters\PermittedManagers‘ -Name “UserAuthentication” -Value 1 
+}
 	#Used as counter for incremting permitted managers
 	$i = 2
 	Foreach ($manager in $managers){
