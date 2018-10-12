@@ -27,16 +27,6 @@
   To add error logging add the following parameters from below
   -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
 #>
-If(Test-Path $logfolder)
-  {
-	    #write-host "path exists"
-	}
-else 
-	{
-		#Write-Host "path doesn't exist"
-		#if the path doesn't exist create it
-		New-Item -ItemType Directory -Path $logfolder
-  }
 
 Param(
   [Parameter(Mandatory=$False,Position=1)]
@@ -55,20 +45,33 @@ Param(
   [string]$logfile,
 
   [Parameter(Mandatory=$False)]
-  [string]$logfolder
+  [System.IO.FileInfo]$logfolder
 )
 
+If(Test-Path $logfolder)
+  {
+	    #write-host "path exists"
+	}
+else 
+	{
+		#Write-Host "path doesn't exist"
+		#if the path doesn't exist create it
+		New-Item -ItemType Directory -Path $logfolder
+  }
 
 Try {
   
  }
  
  Catch {
-  if (!$logfolder -or $errorlog) {
+  $error = $_.Exception 
+  $ErrorMessage = $_.Exception.Message
+  $FailedItem = $_.Exception.ItemName 
+  if (!$logfolder -or !$errorlog) {
     Write-Host "No logfile or log folder specified no logging will be created"
+    write-host "The error is " $ErrorMessage
+    write-host "The item that failed is " $FailedItem
   } else {
-    $ErrorMessage = $_.Exception.Message
-    $FailedItem = $_.Exception.ItemName
     Add-Content $logfolder\$errorlog "The error message is " $ErrorMessage
     Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem		    
   } 
@@ -76,7 +79,7 @@ Try {
  }
  
  Finally {
-  if (!$logfolder -or $logfolder) {
+  if (!$logfolder -or !$logfolder) {
     Write-Host "No logfile or log folder specified no logging will be created"
   } else {
     Add-Content $logfolder\$logfile "The action completed succesfully."
