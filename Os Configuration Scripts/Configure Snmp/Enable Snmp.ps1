@@ -43,28 +43,21 @@
   To add error logging add the following parameters from below
   .\enable snmp -manager1 (managername) -manager2 (managername) -manager3 (managername) -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
 #>
-If(Test-Path $logfolder)
-  {
-	    #write-host "path exists"
-	}
-else 
-	{
-		#Write-Host "path doesn't exist"
-		#if the path doesn't exist create it
-		New-Item -ItemType Directory -Path $logfolder
-  }
-
 Param(
-  [Parameter(Mandatory=$False,Position=1)]
+  [Parameter(Mandatory=$False)]
+  [ValidateNotNull()]
   [string]$manager1,
 	
   [Parameter(Mandatory=$False)]
+  [ValidateNotNull()]
   [string]$manager2,
 
   [Parameter(Mandatory=$False)]
+  [ValidateNotNull()]
   [string]$manager3,
 
   [Parameter(Mandatory=$False)]
+  [ValidateNotNull()]
   [string]$communitystring,
 
   [Parameter(Mandatory=$False)]
@@ -76,6 +69,17 @@ Param(
   [Parameter(Mandatory=$False)]
   [string]$logfolder
 )
+
+#capture where the script is being run from
+$ScriptDir = Split-Path $script:MyInvocation.MyCommand.Path
+
+#If logfolder is specified the directory will be created
+if ($logfolder){
+  If(Test-Path $logfolder){
+  }  else {
+      New-Item -ItemType Directory -Path $logfolder
+  }
+}
 
 #Import ServerManger Module
 Import-Module ServerManager
@@ -97,25 +101,50 @@ Try {
   } 
  } 
  Catch {
-  if (!$logfolder -or $errorlog) {
-    Write-Host "No logfile or log folder specified no logging will be created"
-  } else {
-    $ErrorMessage = $_.Exception.Message
-    $FailedItem = $_.Exception.ItemName
+  $error = $_.Exception 
+  $ErrorMessage = $_.Exception.Message
+  $FailedItem = $_.Exception.ItemName 
+
+  if (!$logfolder -and $errorlog)
+  {
+    Write-Host "No Error log folder specified logging will be created in the directory where the script is run from"
+    Add-Content $scriptdir\$errorlog "The error is " $Error
+    Add-Content $scriptdir\$errorlog "The error message is " $ErrorMessage
+    Add-Content $scriptdir\$errorlog "The item that failed is " $FailedItem        
+  } elseif ($logfolder -and $errorlog) 
+  {
+    Add-Content $logfolder\$errorlog "The error is " $Error
     Add-Content $logfolder\$errorlog "The error message is " $ErrorMessage
-    Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem		    
-  } 
-	Break
+    Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem        
+  }
+  elseif ([string]::IsNullOrWhiteSpace($Errorlog)) 
+  {
+    write-host "No error log specified outputting errors to the screen " 
+    Write-host "The exception that occured is " $error
+    Write-host "The error message is " $errormessage
+    Write-host "The item that fialed is " $faileditem
+  }
+    Break
  }
  
  Finally {
-  if (!$logfolder -or $logfolder) {
-    Write-Host "No logfile or log folder specified no logging will be created"
-  } else {
-    Add-Content $logfolder\$logfile "The action completed succesfully."
-  } 
+  if (!$logfolder -and $logfile) 
+  {
+    #Write-host "No logfolder specified logs will be created locally if requested"   	
+    Add-Content $ScriptDir\$logfile "The action completed succesfully."   
+  }
+  elseif ($logfolder -and $logfile)
+  {
+    Add-Content $logfolder\$logfile "The action completed succesfully."   
+  }
+  elseif ([string]::IsNullOrWhiteSpace($logfile)) 
+  {
+    #Write-host "logfile not specified"
+    write-host "The command completed successfully"   
+  }
  }
-#create first trap receiver
+
+ #create first trap receiver
 Try {
   if (!$trapreceiver1) {
     Write-Host "No trap receiver specified moving on "
@@ -129,23 +158,47 @@ Try {
 }
 
 Catch {
- if (!$logfolder -or $errorlog) {
-   Write-Host "No logfile or log folder specified no logging will be created"
- } else {
-   $ErrorMessage = $_.Exception.Message
-   $FailedItem = $_.Exception.ItemName
-   Add-Content $logfolder\$errorlog "The error message is " $ErrorMessage
-   Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem		    
- } 
- Break
+  $error = $_.Exception 
+  $ErrorMessage = $_.Exception.Message
+  $FailedItem = $_.Exception.ItemName 
+
+  if (!$logfolder -and $errorlog)
+  {
+    Write-Host "No Error log folder specified logging will be created in the directory where the script is run from"
+    Add-Content $scriptdir\$errorlog "The error is " $Error
+    Add-Content $scriptdir\$errorlog "The error message is " $ErrorMessage
+    Add-Content $scriptdir\$errorlog "The item that failed is " $FailedItem        
+  } elseif ($logfolder -and $errorlog) 
+  {
+    Add-Content $logfolder\$errorlog "The error is " $Error
+    Add-Content $logfolder\$errorlog "The error message is " $ErrorMessage
+    Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem        
+  }
+  elseif ([string]::IsNullOrWhiteSpace($Errorlog)) 
+  {
+    write-host "No error log specified outputting errors to the screen " 
+    Write-host "The exception that occured is " $error
+    Write-host "The error message is " $errormessage
+    Write-host "The item that fialed is " $faileditem
+  }
+    Break
 }
 
 Finally {
- if (!$logfolder -or $logfolder) {
-   Write-Host "No logfile or log folder specified no logging will be created"
- } else {
-   Add-Content $logfolder\$logfile "The action completed succesfully."
- } 
+  if (!$logfolder -and $logfile) 
+  {
+    #Write-host "No logfolder specified logs will be created locally if requested"   	
+    Add-Content $ScriptDir\$logfile "The action completed succesfully."   
+  }
+  elseif ($logfolder -and $logfile)
+  {
+    Add-Content $logfolder\$logfile "The action completed succesfully."   
+  }
+  elseif ([string]::IsNullOrWhiteSpace($logfile)) 
+  {
+    #Write-host "logfile not specified"
+    write-host "The command completed successfully"   
+  }
 }
 
 #create second trap receiver
@@ -162,23 +215,47 @@ Try {
 }
 
 Catch {
- if (!$logfolder -or $errorlog) {
-   Write-Host "No logfile or log folder specified no logging will be created"
- } else {
-   $ErrorMessage = $_.Exception.Message
-   $FailedItem = $_.Exception.ItemName
-   Add-Content $logfolder\$errorlog "The error message is " $ErrorMessage
-   Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem		    
- } 
- Break
+  $error = $_.Exception 
+  $ErrorMessage = $_.Exception.Message
+  $FailedItem = $_.Exception.ItemName 
+
+  if (!$logfolder -and $errorlog)
+  {
+    Write-Host "No Error log folder specified logging will be created in the directory where the script is run from"
+    Add-Content $scriptdir\$errorlog "The error is " $Error
+    Add-Content $scriptdir\$errorlog "The error message is " $ErrorMessage
+    Add-Content $scriptdir\$errorlog "The item that failed is " $FailedItem        
+  } elseif ($logfolder -and $errorlog) 
+  {
+    Add-Content $logfolder\$errorlog "The error is " $Error
+    Add-Content $logfolder\$errorlog "The error message is " $ErrorMessage
+    Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem        
+  }
+  elseif ([string]::IsNullOrWhiteSpace($Errorlog)) 
+  {
+    write-host "No error log specified outputting errors to the screen " 
+    Write-host "The exception that occured is " $error
+    Write-host "The error message is " $errormessage
+    Write-host "The item that fialed is " $faileditem
+  }
+    Break
 }
 
 Finally {
- if (!$logfolder -or $logfolder) {
-   Write-Host "No logfile or log folder specified no logging will be created"
- } else {
-   Add-Content $logfolder\$logfile "The action completed succesfully."
- } 
+  if (!$logfolder -and $logfile) 
+  {
+    #Write-host "No logfolder specified logs will be created locally if requested"   	
+    Add-Content $ScriptDir\$logfile "The action completed succesfully."   
+  }
+  elseif ($logfolder -and $logfile)
+  {
+    Add-Content $logfolder\$logfile "The action completed succesfully."   
+  }
+  elseif ([string]::IsNullOrWhiteSpace($logfile)) 
+  {
+    #Write-host "logfile not specified"
+    write-host "The command completed successfully"   
+  }
 }
 
 #create third trap receiver
@@ -190,28 +267,51 @@ Try {
     $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\TrapConfiguration\$communityname" 
     #create the new community string path in the registry
     New-ItemProperty -Path $registryPath -Name 1 -Value $trapreceiver3
-  #now to add the traps
+    #now to add the traps
   }
 }
 
 Catch {
- if (!$logfolder -or $errorlog) {
-   Write-Host "No logfile or log folder specified no logging will be created"
- } else {
-   $ErrorMessage = $_.Exception.Message
-   $FailedItem = $_.Exception.ItemName
-   Add-Content $logfolder\$errorlog "The error message is " $ErrorMessage
-   Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem		    
- } 
- Break
-}
+  $error = $_.Exception 
+  $ErrorMessage = $_.Exception.Message
+  $FailedItem = $_.Exception.ItemName 
+
+  if (!$logfolder -and $errorlog)
+  {
+    Write-Host "No Error log folder specified logging will be created in the directory where the script is run from"
+    Add-Content $scriptdir\$errorlog "The error is " $Error
+    Add-Content $scriptdir\$errorlog "The error message is " $ErrorMessage
+    Add-Content $scriptdir\$errorlog "The item that failed is " $FailedItem        
+  } elseif ($logfolder -and $errorlog) 
+  {
+    Add-Content $logfolder\$errorlog "The error is " $Error
+    Add-Content $logfolder\$errorlog "The error message is " $ErrorMessage
+    Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem        
+  }
+  elseif ([string]::IsNullOrWhiteSpace($Errorlog)) 
+  {
+    write-host "No error log specified outputting errors to the screen " 
+    Write-host "The exception that occured is " $error
+    Write-host "The error message is " $errormessage
+    Write-host "The item that fialed is " $faileditem
+  }
+    Break}
 
 Finally {
- if (!$logfolder -or $logfolder) {
-   Write-Host "No logfile or log folder specified no logging will be created"
- } else {
-   Add-Content $logfolder\$logfile "The action completed succesfully."
- } 
+  if (!$logfolder -and $logfile) 
+  {
+    #Write-host "No logfolder specified logs will be created locally if requested"   	
+    Add-Content $ScriptDir\$logfile "The action completed succesfully."   
+  }
+  elseif ($logfolder -and $logfile)
+  {
+    Add-Content $logfolder\$logfile "The action completed succesfully."   
+  }
+  elseif ([string]::IsNullOrWhiteSpace($logfile)) 
+  {
+    #Write-host "logfile not specified"
+    write-host "The command completed successfully"   
+  }
 }
 
 
@@ -229,23 +329,47 @@ Try {
 }
 
 Catch {
- if (!$logfolder -or $errorlog) {
-   Write-Host "No logfile or log folder specified no logging will be created"
- } else {
-   $ErrorMessage = $_.Exception.Message
-   $FailedItem = $_.Exception.ItemName
-   Add-Content $logfolder\$errorlog "The error message is " $ErrorMessage
-   Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem		    
- } 
- Break
+  $error = $_.Exception 
+  $ErrorMessage = $_.Exception.Message
+  $FailedItem = $_.Exception.ItemName 
+
+  if (!$logfolder -and $errorlog)
+  {
+    Write-Host "No Error log folder specified logging will be created in the directory where the script is run from"
+    Add-Content $scriptdir\$errorlog "The error is " $Error
+    Add-Content $scriptdir\$errorlog "The error message is " $ErrorMessage
+    Add-Content $scriptdir\$errorlog "The item that failed is " $FailedItem        
+  } elseif ($logfolder -and $errorlog) 
+  {
+    Add-Content $logfolder\$errorlog "The error is " $Error
+    Add-Content $logfolder\$errorlog "The error message is " $ErrorMessage
+    Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem        
+  }
+  elseif ([string]::IsNullOrWhiteSpace($Errorlog)) 
+  {
+    write-host "No error log specified outputting errors to the screen " 
+    Write-host "The exception that occured is " $error
+    Write-host "The error message is " $errormessage
+    Write-host "The item that fialed is " $faileditem
+  }
+    Break
 }
 
 Finally {
- if (!$logfolder -or $logfolder) {
-   Write-Host "No logfile or log folder specified no logging will be created"
- } else {
-   Add-Content $logfolder\$logfile "The action completed succesfully."
- } 
+  if (!$logfolder -and $logfile) 
+  {
+    #Write-host "No logfolder specified logs will be created locally if requested"   	
+    Add-Content $ScriptDir\$logfile "The action completed succesfully."   
+  }
+  elseif ($logfolder -and $logfile)
+  {
+    Add-Content $logfolder\$logfile "The action completed succesfully."   
+  }
+  elseif ([string]::IsNullOrWhiteSpace($logfile)) 
+  {
+    #Write-host "logfile not specified"
+    write-host "The command completed successfully"   
+  }
 }
 
 #configure communities
@@ -262,23 +386,47 @@ Try {
 }
 
 Catch {
- if (!$logfolder -or $errorlog) {
-   Write-Host "No logfile or log folder specified no logging will be created"
- } else {
-   $ErrorMessage = $_.Exception.Message
-   $FailedItem = $_.Exception.ItemName
-   Add-Content $logfolder\$errorlog "The error message is " $ErrorMessage
-   Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem		    
- } 
- Break
-}
+  $error = $_.Exception 
+  $ErrorMessage = $_.Exception.Message
+  $FailedItem = $_.Exception.ItemName 
+
+  if (!$logfolder -and $errorlog)
+  {
+    Write-Host "No Error log folder specified logging will be created in the directory where the script is run from"
+    Add-Content $scriptdir\$errorlog "The error is " $Error
+    Add-Content $scriptdir\$errorlog "The error message is " $ErrorMessage
+    Add-Content $scriptdir\$errorlog "The item that failed is " $FailedItem        
+  } elseif ($logfolder -and $errorlog) 
+  {
+    Add-Content $logfolder\$errorlog "The error is " $Error
+    Add-Content $logfolder\$errorlog "The error message is " $ErrorMessage
+    Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem        
+  }
+  elseif ([string]::IsNullOrWhiteSpace($Errorlog)) 
+  {
+    write-host "No error log specified outputting errors to the screen " 
+    Write-host "The exception that occured is " $error
+    Write-host "The error message is " $errormessage
+    Write-host "The item that fialed is " $faileditem
+  }
+    Break
+  }
 
 Finally {
- if (!$logfolder -or $logfolder) {
-   Write-Host "No logfile or log folder specified no logging will be created"
- } else {
-   Add-Content $logfolder\$logfile "The action completed succesfully."
- } 
+  if (!$logfolder -and $logfile) 
+  {
+    #Write-host "No logfolder specified logs will be created locally if requested"   	
+    Add-Content $ScriptDir\$logfile "The action completed succesfully."   
+  }
+  elseif ($logfolder -and $logfile)
+  {
+    Add-Content $logfolder\$logfile "The action completed succesfully."   
+  }
+  elseif ([string]::IsNullOrWhiteSpace($logfile)) 
+  {
+    #Write-host "logfile not specified"
+    write-host "The command completed successfully"   
+  }
 }
 
 
