@@ -65,8 +65,8 @@ Try {
 }
  
 Catch {
-  $myerror = $_.Exception 
-  $errorMessage = $_.Exception.Message
+  $error = $_.Exception 
+  $ErrorMessage = $_.Exception.Message
   $FailedItem = $_.Exception.ItemName 
 
   if (!$logfolder -and $errorlog)
