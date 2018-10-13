@@ -1,9 +1,9 @@
 #requires -version 2
 <#
 .SYNOPSIS
-   This script can be used configur snmp services
+   This script can be used configure windows server backup
 .DESCRIPTION
-  This script will ip the first network card that is connected to the network
+  This script configure windows server backup
 .PARAMETER <Parameter_Name>
     Required fields none
 .INPUTS

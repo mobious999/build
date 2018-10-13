@@ -5,9 +5,13 @@
 .DESCRIPTION
   
 .PARAMETER <Parameter_Name>
-    Required fields
+    Required fields (policy)
+    List all parameters here
+    $errorlog
+    $logfile
+    $logfolder
 .INPUTS
-    Not really required but tailor them to your environment
+    only the policy that you want to change to is required
 .OUTPUTS
     
 .NOTES
@@ -22,7 +26,7 @@
 #>
 
 Param(
-  [Parameter(Mandatory=$False,Position=1)]
+  [Parameter(Mandatory=$False)]
   [string]$Policy,
  
   [Parameter(Mandatory=$False)]
@@ -35,40 +39,63 @@ Param(
   [string]$logfolder
 )
 
-If(Test-Path $logfolder)
-  	{
-	    #write-host "path exists"
-	}
-else 
-	{
-		#Write-Host "path doesn't exist"
-		#if the path doesn't exist create it
-		New-Item -ItemType Directory -Path $logfolder
-    }
+#capture where the script is being run from
+$ScriptDir = Split-Path $script:MyInvocation.MyCommand.Path
+
+#If logfolder is specified the directory will be created
+if ($logfolder){
+  If(Test-Path $logfolder){
+  }  else {
+      New-Item -ItemType Directory -Path $logfolder
+  }
+}
   
 
 Try {
     If ((get-ExecutionPolicy) -ne $Policy) {
         Set-ExecutionPolicy $Policy -Force
-        #Exit
     }
 }
 
 Catch {
-    # Run this if a terminating error occurred in the Try block
-    # The variable $_ represents the error that occurred
-    #$_
-    Add-Content $logfolder\$errorlog "There was an error when attempting to set the execution policy" 
-    Add-content $logfolder\$errorlog "The Error is " $_
-}
+  $myerror = $_.Exception 
+  $errorMessage = $_.Exception.Message
+  $FailedItem = $_.Exception.ItemName 
+
+  if (!$logfolder -and $errorlog)
+  {
+    Write-Host "No Error log folder specified logging will be created in the directory where the script is run from"
+    Add-Content $scriptdir\$errorlog "The error is " $myError
+    Add-Content $scriptdir\$errorlog "The error message is " $ErrorMessage
+    Add-Content $scriptdir\$errorlog "The item that failed is " $FailedItem        
+  } elseif ($logfolder -and $errorlog) 
+  {
+    Add-Content $logfolder\$errorlog "The error is " $myError
+    Add-Content $logfolder\$errorlog "The error message is " $ErrorMessage
+    Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem        
+  }
+  elseif ([string]::IsNullOrWhiteSpace($Errorlog)) 
+  {
+    write-host "No error log specified outputting errors to the screen " 
+    Write-host "The exception that occured is " $myerror
+    Write-host "The error message is " $errormessage
+    Write-host "The item that fialed is " $faileditem
+  }
+    Break}
 
 Finally {
- # Always run this at the end
- write-host "Powershell Execution policy has been set correctly to Remotesigned"
-}
-
-
-If ((get-ExecutionPolicy) -ne $Policy) {
-  Set-ExecutionPolicy $Policy -Force
-  Exit
+  if (!$logfolder -and $logfile) 
+  {
+    #Write-host "No logfolder specified logs will be created locally if requested"   	
+    Add-Content $ScriptDir\$logfile "The action completed succesfully."   
+  }
+  elseif ($logfolder -and $logfile)
+  {
+    Add-Content $logfolder\$logfile "The action completed succesfully."   
+  }
+  elseif ([string]::IsNullOrWhiteSpace($logfile)) 
+  {
+    #Write-host "logfile not specified"
+    write-host "The command completed successfully"   
+  }
 }

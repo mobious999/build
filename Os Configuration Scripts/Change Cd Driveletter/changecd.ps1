@@ -54,19 +54,19 @@ Try {
 }
  
 Catch {
-  $error = $_.Exception 
+  $myerror = $_.Exception 
   $ErrorMessage = $_.Exception.Message
   $FailedItem = $_.Exception.ItemName 
 
   if (!$logfolder -and $errorlog)
   {
     Write-Host "No Error log folder specified logging will be created in the directory where the script is run from"
-    Add-Content $scriptdir\$errorlog "The error is " $Error
+    Add-Content $scriptdir\$errorlog "The error is " $myError
     Add-Content $scriptdir\$errorlog "The error message is " $ErrorMessage
     Add-Content $scriptdir\$errorlog "The item that failed is " $FailedItem        
   } elseif ($logfolder -and $errorlog) 
   {
-    Add-Content $logfolder\$errorlog "The error is " $Error
+    Add-Content $logfolder\$errorlog "The error is " $myError
     Add-Content $logfolder\$errorlog "The error message is " $ErrorMessage
     Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem        
   }

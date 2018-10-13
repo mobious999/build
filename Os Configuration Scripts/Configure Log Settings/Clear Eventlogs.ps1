@@ -84,19 +84,19 @@ Catch {
     if (!$logfolder -and $errorlog)
     {
       Write-Host "No Error log folder specified logging will be created in the directory where the script is run from"
-      Add-Content $scriptdir\$errorlog "The error is " $Error
+      Add-Content $scriptdir\$errorlog "The error is " $myError
       Add-Content $scriptdir\$errorlog "The error message is " $ErrorMessage
       Add-Content $scriptdir\$errorlog "The item that failed is " $FailedItem        
     } elseif ($logfolder -and $errorlog) 
     {
-      Add-Content $logfolder\$errorlog "The error is " $Error
+      Add-Content $logfolder\$errorlog "The error is " $myError
       Add-Content $logfolder\$errorlog "The error message is " $ErrorMessage
       Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem        
     }
     elseif ([string]::IsNullOrWhiteSpace($Errorlog)) 
     {
       write-host "No error log specified outputting errors to the screen " 
-      Write-host "The exception that occured is " $error
+      Write-host "The exception that occured is " $myError
       Write-host "The error message is " $errormessage
       Write-host "The item that fialed is " $faileditem
     }

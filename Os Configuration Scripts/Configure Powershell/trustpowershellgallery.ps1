@@ -1,7 +1,7 @@
 #requires -version 5.1
 <#
 .SYNOPSIS
-  This script can be used to (insert what it does here)
+  This script can be used to set the powreshell gallery to trusted
 .DESCRIPTION
   
 .PARAMETER <Parameter_Name>
@@ -29,18 +29,6 @@
 
 Param(
   [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter1,
-	
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter2,
-
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter3,
-
-  [Parameter(Mandatory=$False)]
   [string]$errorlog,
 
   [Parameter(Mandatory=$False)]
@@ -62,11 +50,12 @@ if ($logfolder){
 }
 
 Try {
+  Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 }
  
 Catch {
   $myerror = $_.Exception 
-  $ErrorMessage = $_.Exception.Message
+  $errorMessage = $_.Exception.Message
   $FailedItem = $_.Exception.ItemName 
 
   if (!$logfolder -and $errorlog)
