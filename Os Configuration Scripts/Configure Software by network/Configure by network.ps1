@@ -60,13 +60,36 @@ if ($logfolder){
       New-Item -ItemType Directory -Path $logfolder
   }
 }
+$IPAddress = (Get-NetIPAddress|Select-Object IPAddress| Where-Object { $_.IpAddress -like "192.168.*"}) | Select-Object -ExpandProperty ipaddress
+$subnet = $IPAddress.Remove($IPAddress.LastIndexOf('.'))
+
+If ($subnet -like  "192.168.136*") {
+  Write-host "this machine is in the xxxx network beginning configuration"
+  #beginning registry check
+  If (Get-ItemProperty -Path 'HKCU:\Control Panel\Desktop' -Name "CursorBlinkRate" -ErrorAction SilentlyContinue) {
+    Write-Output 'Value exists'
+  } Else {
+    Write-Output 'Value DOES NOT exist'
+  }
+  #end registry check
+    $software = "Microsoft .NET Core Runtime - 2.0.0 (x64)";
+    $installed = (Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Where-Object { $_.DisplayName -eq $software }) -ne $null
+    If(-Not $installed) {
+      Write-Host "'$software' NOT is installed.";
+    } else {
+      Write-Host "'$software' is installed."
+    }
+  }  Else {
+  # Continue on there's nothing to verify for this host
+} 
 
 Try {
+  Get-NetIPAddress
 }
  
 Catch {
   $myerror = $_.Exception 
-  $ErrorMessage = $_.Exception.Message
+  $errorMessage = $_.Exception.Message
   $FailedItem = $_.Exception.ItemName 
 
   if (!$logfolder -and $errorlog)

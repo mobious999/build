@@ -1,0 +1,10 @@
+$IPAddress = (Get-NetIPAddress|Select-Object IPAddress| where { $_.IpAddress -like "192.168.*"}) | Select-Object -ExpandProperty ipaddress
+$a = $IPAddress.Remove($IPAddress.LastIndexOf('.'))
+#write-host $IPAddress
+If ($a -like  "192.168.136*") {
+  Write-host "this machine is in the xxxx network beginning configuration"
+	  }  Else {
+
+  'This number is  1'    
+
+} 
