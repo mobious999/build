@@ -5,40 +5,41 @@
 .DESCRIPTION
   
 .PARAMETER <Parameter_Name>
-    List all parameters here
-    $syscontact
-    $syslocation
-    $sysservices
-    $enableauthtraps
-    $manager1
-    $manager2
-    $manager3
-    $trapreceiver1
-    $trapreceiver2
-    $trapreceiver3
-    $trapreceiver4
-    $communitystring
-    $errorlog
-    $logfile
-    $logfolder
+  List all parameters here
+  $syscontact
+  $syslocation
+  $sysservices
+  $enableauthtraps
+  $manager1
+  $manager2
+  $manager3
+  $trapreceiver1
+  $trapreceiver2
+  $trapreceiver3
+  $trapreceiver4
+  $communitystring
+  $communitystringsecurity
+  $errorlog
+  $logfile
+  $logfolder
 .INPUTS
-    List all inputs here
-    $syscontact  # The person to contact for the system
-    $syslocation # The rack location of the device
-    $sysservices # Enables Physical Service, Applications Service, Datalink and subnetwork Service, Internet Service, End to End Service
-    $enableauthtraps (enables or disables snmp authentaction traps - better to leave disabled)
-    $manager1 
-    $manager2
-    $manager3
-    $trapreceiver1
-    $trapreceiver2
-    $trapreceiver3
-    $trapreceiver4
-    $communitystring
-    $communitystringsecurity (the security level of the snmp community (read-only etc))
-    $errorlog - the log that gets created on a trapped error
-    $logfile - the log of the action and completion
-    $logfolder - where the logs get created
+  List all inputs here
+  $syscontact  # The person to contact for the system
+  $syslocation # The rack location of the device
+  $sysservices # Enables Physical Service, Applications Service, Datalink and subnetwork Service, Internet Service, End to End Service
+  $enableauthtraps (enables or disables snmp authentaction traps - better to leave disabled)
+  $manager1 
+  $manager2
+  $manager3
+  $trapreceiver1 
+  $trapreceiver2
+  $trapreceiver3
+  $trapreceiver4
+  $communitystring
+  $communitystringsecurity (the security level of the snmp community (read-only etc))
+  $errorlog - the log that gets created on a trapped error
+  $logfile - the log of the action and completion
+  $logfolder - where the logs get created
 .OUTPUTS
     Standard logfiles if enabled
 .NOTES
@@ -115,6 +116,10 @@ Param(
   [string]$communitystring,
 
   [Parameter(Mandatory=$False)]
+  [ValidateNotNull()]
+  [string]$parameter1,
+
+  [Parameter(Mandatory=$False)]
   [string]$errorlog,
 
   [Parameter(Mandatory=$False)]
@@ -173,7 +178,7 @@ Catch {
     write-host "No error log specified outputting errors to the screen " 
     Write-host "The exception that occured is " $myerror
     Write-host "The error message is " $errormessage
-    Write-host "The item that fialed is " $faileditem
+    Write-host "The item that failed is " $faileditem
   }
     Break
 }
@@ -225,7 +230,7 @@ Catch {
     write-host "No error log specified outputting errors to the screen " 
     Write-host "The exception that occured is " $myerror
     Write-host "The error message is " $errormessage
-    Write-host "The item that fialed is " $faileditem
+    Write-host "The item that failed is " $faileditem
   }
     Break
 }
@@ -276,7 +281,7 @@ Catch {
     write-host "No error log specified outputting errors to the screen " 
     Write-host "The exception that occured is " $myerror
     Write-host "The error message is " $errormessage
-    Write-host "The item that fialed is " $faileditem
+    Write-host "The item that failed is " $faileditem
   }
     Break
 }
@@ -298,77 +303,12 @@ Finally {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Try {
-    #map the community name above to a new registry key
-    $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\TrapConfiguration\$communityname" 
-    #create the new community string path in the registry
-    New-ItemProperty -Path $registryPath -Name $name -Value $value 
- } 
- Catch {
-  $error = $_.Exception 
-  $ErrorMessage = $_.Exception.Message
-  $FailedItem = $_.Exception.ItemName 
-
-  if (!$logfolder -and $errorlog)
-  {
-    Write-Host "No Error log folder specified logging will be created in the directory where the script is run from"
-    Add-Content $scriptdir\$errorlog "The error is " $Error
-    Add-Content $scriptdir\$errorlog "The error message is " $ErrorMessage
-    Add-Content $scriptdir\$errorlog "The item that failed is " $FailedItem        
-  } elseif ($logfolder -and $errorlog) 
-  {
-    Add-Content $logfolder\$errorlog "The error is " $Error
-    Add-Content $logfolder\$errorlog "The error message is " $ErrorMessage
-    Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem        
-  }
-  elseif ([string]::IsNullOrWhiteSpace($Errorlog)) 
-  {
-    write-host "No error log specified outputting errors to the screen " 
-    Write-host "The exception that occured is " $error
-    Write-host "The error message is " $errormessage
-    Write-host "The item that fialed is " $faileditem
-  }
-    Break
- }
- 
- Finally {
-  if (!$logfolder -and $logfile) 
-  {
-    #Write-host "No logfolder specified logs will be created locally if requested"   	
-    Add-Content $ScriptDir\$logfile "The action completed succesfully."   
-  }
-  elseif ($logfolder -and $logfile)
-  {
-    Add-Content $logfolder\$logfile "The action completed succesfully."   
-  }
-  elseif ([string]::IsNullOrWhiteSpace($logfile)) 
-  {
-    #Write-host "logfile not specified"
-    write-host "The command completed successfully"   
-  }
- }
-
  #create first trap receiver
 Try {
     #map the community name above to a new registry key
     $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\TrapConfiguration\$communityname" 
     #create the new community string path in the registry
-    New-ItemProperty -Path $registryPath -Name 1 -Value $trapreceiver1
-  }
+    New-ItemProperty -Path $registryPath -Name 1 -Value $trapreceiver1 
 }
 
 Catch {
@@ -393,7 +333,7 @@ Catch {
     write-host "No error log specified outputting errors to the screen " 
     Write-host "The exception that occured is " $error
     Write-host "The error message is " $errormessage
-    Write-host "The item that fialed is " $faileditem
+    Write-host "The item that failed is " $faileditem
   }
     Break
 }
@@ -519,7 +459,6 @@ Finally {
   }
 }
 
-
 #create fourth trap receiver
 Try {
     #map the community name above to a new registry key
@@ -572,12 +511,12 @@ Finally {
   }
 }
 
-#configure communities
+#configure communities and the type
 Try {
     #map the community name above to a new registry key
     $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\ValidCommunities\$communityname" 
     #create the new community string path in the registry
-    New-ItemProperty -Path $registryPath -Name 4 -Value $communitystring
+    New-ItemProperty -Path $registryPath -Name $communitystring -Value $communitystringsecurity
 }
 
 Catch {
@@ -602,7 +541,7 @@ Catch {
     write-host "No error log specified outputting errors to the screen " 
     Write-host "The exception that occured is " $error
     Write-host "The error message is " $errormessage
-    Write-host "The item that fialed is " $faileditem
+    Write-host "The item that failed is " $faileditem
   }
     Break
   }
@@ -624,4 +563,156 @@ Finally {
   }
 }
 
+Try {
+  #configure the permitted managers
+  $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\PermittedManagers" 
+  #create the new community string path in the registry
+  New-ItemProperty -Path $registryPath -Name $manager -Value 1
+}
+
+Catch {
+$error = $_.Exception 
+$ErrorMessage = $_.Exception.Message
+$FailedItem = $_.Exception.ItemName 
+
+if (!$logfolder -and $errorlog)
+{
+  Write-Host "No Error log folder specified logging will be created in the directory where the script is run from"
+  Add-Content $scriptdir\$errorlog "The error is " $Error
+  Add-Content $scriptdir\$errorlog "The error message is " $ErrorMessage
+  Add-Content $scriptdir\$errorlog "The item that failed is " $FailedItem        
+} elseif ($logfolder -and $errorlog) 
+{
+  Add-Content $logfolder\$errorlog "The error is " $Error
+  Add-Content $logfolder\$errorlog "The error message is " $ErrorMessage
+  Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem        
+}
+elseif ([string]::IsNullOrWhiteSpace($Errorlog)) 
+{
+  write-host "No error log specified outputting errors to the screen " 
+  Write-host "The exception that occured is " $error
+  Write-host "The error message is " $errormessage
+  Write-host "The item that failed is " $faileditem
+}
+  Break
+}
+
+Finally {
+if (!$logfolder -and $logfile) 
+{
+  #Write-host "No logfolder specified logs will be created locally if requested"   	
+  Add-Content $ScriptDir\$logfile "The action completed succesfully."   
+}
+elseif ($logfolder -and $logfile)
+{
+  Add-Content $logfolder\$logfile "The action completed succesfully."   
+}
+elseif ([string]::IsNullOrWhiteSpace($logfile)) 
+{
+  #Write-host "logfile not specified"
+  write-host "The command completed successfully"   
+}
+}
+
+Try {
+  #configure the permitted managers
+  $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\PermittedManagers" 
+  #create the new community string path in the registry
+  New-ItemProperty -Path $registryPath -Name $manager1 -Value 2
+}
+
+Catch {
+$error = $_.Exception 
+$ErrorMessage = $_.Exception.Message
+$FailedItem = $_.Exception.ItemName 
+
+if (!$logfolder -and $errorlog)
+{
+  Write-Host "No Error log folder specified logging will be created in the directory where the script is run from"
+  Add-Content $scriptdir\$errorlog "The error is " $Error
+  Add-Content $scriptdir\$errorlog "The error message is " $ErrorMessage
+  Add-Content $scriptdir\$errorlog "The item that failed is " $FailedItem        
+} elseif ($logfolder -and $errorlog) 
+{
+  Add-Content $logfolder\$errorlog "The error is " $Error
+  Add-Content $logfolder\$errorlog "The error message is " $ErrorMessage
+  Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem        
+}
+elseif ([string]::IsNullOrWhiteSpace($Errorlog)) 
+{
+  write-host "No error log specified outputting errors to the screen " 
+  Write-host "The exception that occured is " $error
+  Write-host "The error message is " $errormessage
+  Write-host "The item that failed is " $faileditem
+}
+  Break
+}
+
+Finally {
+if (!$logfolder -and $logfile) 
+{
+  #Write-host "No logfolder specified logs will be created locally if requested"   	
+  Add-Content $ScriptDir\$logfile "The action completed succesfully."   
+}
+elseif ($logfolder -and $logfile)
+{
+  Add-Content $logfolder\$logfile "The action completed succesfully."   
+}
+elseif ([string]::IsNullOrWhiteSpace($logfile)) 
+{
+  #Write-host "logfile not specified"
+  write-host "The command completed successfully"   
+}
+}
+
+Try {
+  #configure the permitted managers
+  $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\PermittedManagers" 
+  #create the new community string path in the registry
+  New-ItemProperty -Path $registryPath -Name $manager2 -Value 3
+}
+
+Catch {
+$error = $_.Exception 
+$ErrorMessage = $_.Exception.Message
+$FailedItem = $_.Exception.ItemName 
+
+if (!$logfolder -and $errorlog)
+{
+  Write-Host "No Error log folder specified logging will be created in the directory where the script is run from"
+  Add-Content $scriptdir\$errorlog "The error is " $Error
+  Add-Content $scriptdir\$errorlog "The error message is " $ErrorMessage
+  Add-Content $scriptdir\$errorlog "The item that failed is " $FailedItem        
+} elseif ($logfolder -and $errorlog) 
+{
+  Add-Content $logfolder\$errorlog "The error is " $Error
+  Add-Content $logfolder\$errorlog "The error message is " $ErrorMessage
+  Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem        
+}
+elseif ([string]::IsNullOrWhiteSpace($Errorlog)) 
+{
+  write-host "No error log specified outputting errors to the screen " 
+  Write-host "The exception that occured is " $error
+  Write-host "The error message is " $errormessage
+  Write-host "The item that failed is " $faileditem
+}
+  Break
+}
+
+Finally {
+if (!$logfolder -and $logfile) 
+{
+  #Write-host "No logfolder specified logs will be created locally if requested"   	
+  Add-Content $ScriptDir\$logfile "The action completed succesfully."   
+}
+elseif ($logfolder -and $logfile)
+{
+  Add-Content $logfolder\$logfile "The action completed succesfully."   
+}
+elseif ([string]::IsNullOrWhiteSpace($logfile)) 
+{
+  #Write-host "logfile not specified"
+  write-host "The command completed successfully"   
+}
+}
 
