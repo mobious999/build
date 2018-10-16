@@ -71,7 +71,7 @@ if ($logfolder){
 
 Try {
   $regkey = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects'
-  Set-ItemProperty -Path $regkey -Name "VisualFXSetting" -Value 2
+  Set-ItemProperty -Path $regkey -Name "VisualFXSetting" -Value $VisualFXSetting
 }
  
 Catch {
