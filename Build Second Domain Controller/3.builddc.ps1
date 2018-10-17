@@ -6,11 +6,23 @@
   
 .PARAMETER <Parameter_Name>
     List all parameters here
+    $password 
+    $DomainName
+    $dnsdelegation
+    $CriticalReplication
+    $InstallDNS
     $errorlog
     $logfile
     $logfolder
 .INPUTS
     List all inputs here
+    $password - secure password
+    $DomainName (fqdn of the domain)
+    $dnsdelegation (true / false)
+    $CriticalReplication (true / false)
+    $InstallDNS (true / false)
+    $SiteName (site name for the ad site
+
     $errorlog - the log that gets created on a trapped error
     $logfile - the log of the action and completion
     $logfolder - where the logs get created
@@ -28,17 +40,29 @@
 #>
 
 Param(
-  [Parameter(Mandatory=$False)]
+  [Parameter(Mandatory=$true)]
   [ValidateNotNull()]
-  [string]$parameter1,
+  [securestring]$Password,
 	
-  [Parameter(Mandatory=$False)]
+  [Parameter(Mandatory=$true)]
   [ValidateNotNull()]
-  [string]$parameter2,
+  [string]$DomainName,
 
-  [Parameter(Mandatory=$False)]
+  [Parameter(Mandatory=$true)]
   [ValidateNotNull()]
-  [string]$parameter3,
+  [string]$dnsdelegation,
+
+  [Parameter(Mandatory=$true)]
+  [ValidateNotNull()]
+  [string]$CriticalReplication,
+
+  [Parameter(Mandatory=$true)]
+  [ValidateNotNull()]
+  [string]$InstallDNS,
+
+  [Parameter(Mandatory=$true)]
+  [ValidateNotNull()]
+  [string]$SiteName,
 
   [Parameter(Mandatory=$False)]
   [string]$errorlog,
@@ -62,7 +86,9 @@ if ($logfolder){
 }
 
 Try {
-  
+  Install-ADDSDomainController -NoGlobalCatalog:$false -CreateDNSDelegation:$dnsdelegation -Credential (Get-Credential) -CriticalReplication:$CriticalReplication `
+-DatabasePath “C:\Windows\NTDS” -DomainName $DomainName -InstallDNS:$installdns -LogPath “C:\Windows\NTDS\Logs” -SiteName $sitename `
+-SYSVOLPath “C:\Windows\SYSVOL” -Force:$true -SafeModeAdministratorPassword $password
 }
  
 Catch {

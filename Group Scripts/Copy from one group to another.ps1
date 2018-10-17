@@ -6,11 +6,15 @@
   
 .PARAMETER <Parameter_Name>
     List all parameters here
+    $sourcegroup
+    $destinationgroup
     $errorlog
     $logfile
     $logfolder
 .INPUTS
     List all inputs here
+    $sourcegroup
+    $destinationgroup
     $errorlog - the log that gets created on a trapped error
     $logfile - the log of the action and completion
     $logfolder - where the logs get created
@@ -30,15 +34,11 @@
 Param(
   [Parameter(Mandatory=$False)]
   [ValidateNotNull()]
-  [string]$parameter1,
+  [string]$sourcegroup,
 	
   [Parameter(Mandatory=$False)]
   [ValidateNotNull()]
-  [string]$parameter2,
-
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter3,
+  [string]$destgroup,
 
   [Parameter(Mandatory=$False)]
   [string]$errorlog,
@@ -62,7 +62,7 @@ if ($logfolder){
 }
 
 Try {
-  
+  Get-ADGroupMember -Identity $sourcegroup | Add-ADPrincipalGroupMembership -MemberOf $destgroup
 }
  
 Catch {

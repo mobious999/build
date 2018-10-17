@@ -1,16 +1,20 @@
 #requires -version 5.1
 <#
 .SYNOPSIS
-  This script can be used to (insert what it does here)
+  This script can be used to rename an active directory group
 .DESCRIPTION
   
 .PARAMETER <Parameter_Name>
     List all parameters here
+    $Sourcegroup
+    $Destinationgroup
     $errorlog
     $logfile
     $logfolder
 .INPUTS
     List all inputs here
+    $Sourcegroup - The ad group that needs to be renamed
+    $Destinationgroup - The ad new group name
     $errorlog - the log that gets created on a trapped error
     $logfile - the log of the action and completion
     $logfolder - where the logs get created
@@ -28,17 +32,13 @@
 #>
 
 Param(
-  [Parameter(Mandatory=$False)]
+  [Parameter(Mandatory=$true)]
   [ValidateNotNull()]
-  [string]$parameter1,
+  [string]$Sourcegroup,
 	
-  [Parameter(Mandatory=$False)]
+  [Parameter(Mandatory=$true)]
   [ValidateNotNull()]
-  [string]$parameter2,
-
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter3,
+  [string]$Destinationgroup,
 
   [Parameter(Mandatory=$False)]
   [string]$errorlog,
@@ -62,7 +62,7 @@ if ($logfolder){
 }
 
 Try {
-  
+  get-adgroup -identity $Sourcegroup | %{set-adgroup -samaccountname $Destinationgroup; $_ | rename-adobject -newname $Destinationgroup}
 }
  
 Catch {
