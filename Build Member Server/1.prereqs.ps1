@@ -1,7 +1,7 @@
 #requires -version 5.1
 <#
 .SYNOPSIS
-  This script can be used to convert a member server to being a domain controller
+  This script can be used to configure a member server basic settings
 .DESCRIPTION
   
 .PARAMETER <Parameter_Name>
