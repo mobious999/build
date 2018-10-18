@@ -157,7 +157,7 @@ If ((Test-Path "W:\OLAP\Temp") -eq $false)
     New-Item -Path "W:\OLAP\Temp" -ItemType Container
 }
 #Adding a catch for the G: drive
-    $GDRive = Get-PSDrive | Where-Object {$_.root -like "G:*"}
+$GDRive = Get-PSDrive | Where-Object {$_.root -like "G:*"}
 If ($GDRive -ne $null)
 {
     If ((Test-Path "G:\MSSQLDB\Data") -eq $false)
