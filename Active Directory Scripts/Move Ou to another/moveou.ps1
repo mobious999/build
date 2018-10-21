@@ -24,6 +24,7 @@
   Creation Date:  9/30/2018
   Purpose/Change: Initial script development
   Based on this article 
+  https://blog.netwrix.com/2018/06/26/managing-ous-and-moving-their-objects-with-powershell/#Create%20OUs%20in%20an%20Active%20Directory%20Domain%20with%20PowerShell
 .EXAMPLE
   .\movou -source ou "OU=Regions,OU=Managers,DC=Enterprise,DC=Com" -destou "OU=IT,DC=Enterprise,DC=Com"
   To add error logging add the following parameters from below
