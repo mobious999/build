@@ -1,0 +1,29 @@
+iis hardening 
+- windows 2008 (iis 7.0)
+- windows 2008r2 (iis 7.5)
+
+
+%systemroot%\system32\inetsrv\appcmd list vdir
+move all content from c:\inetpub\wwwroot to D:\webroot\
+
+iis 7.0
+move fre request buffer logs to 
+%windir%\system32\inetsrv\appcmd set config -section:system.applicationHost/sites -siteDefaults.traceFailedRequestsLogging.directory:"F:\inetpub\logs\FailedReqLogFiles"
+Change logfiles location
+%windir%\system32\inetsrv\appcmd set config -section:system.applicationHost/sites -siteDefaults.logfile.directory:"F:\inetpub\logs\logfiles"%windir%\system32\inetsrv\appcmd set config -section:system.applicationHost/log -centralBinaryLogFile.directory:"F:\inetpub\logs\logfiles"%windir%\system32\inetsrv\appcmd set config -section:system.applicationHost/log -centralW3CLogFile.directory:"F:\inetpub\logs\logfiles"
+Change temp\appools
+reg add HKLM\System\CurrentControlSet\Services\WAS\Parameters /v ConfigIsolationPath /t REG_SZ /d f:\inetpub\temp\appPools 
+Change history
+%windir%\system32\inetsrv\appcmd set config -section:system.applicationhost/configHistory -path:f:\inetpub\history
+change temp\asp compiled templates
+%windir%\system32\inetsrv\appcmd set config -section:system.webServer/asp -cache.disktemplateCacheDirectory:"f:\inetpub\temp\ASP Compiled Templates"
+change TEMP\IIS TEMPORARY COMPRESSED FILES
+%windir%\system32\inetsrv\appcmd set config -section:system.webServer/httpCompression -directory:"f:\inetpub\temp\IIS Temporary Compressed Files"
+change default wwwroot 
+%windir%\system32\inetsrv\appcmd set vdir "Default Web Site/" -physicalPath:f:\inetpub\wwwroot
+Change custom error locations
+%windir%\system32\inetsrv\appcmd set config -section:httpErrors /[statusCode='401'].prefixLanguageFilePath:f:\inetpub\custerr%windir%\system32\inetsrv\appcmd set config -section:httpErrors /[statusCode='403'].prefixLanguageFilePath:f:\inetpub\custerr%windir%\system32\inetsrv\appcmd set config -section:httpErrors /[statusCode='404'].prefixLanguageFilePath:f:\inetpub\custerr%windir%\system32\inetsrv\appcmd set config -section:httpErrors /[statusCode='405'].prefixLanguageFilePath:f:\inetpub\custerr%windir%\system32\inetsrv\appcmd set config -section:httpErrors /[statusCode='406'].prefixLanguageFilePath:f:\inetpub\custerr%windir%\system32\inetsrv\appcmd set config -section:httpErrors /[statusCode='412'].prefixLanguageFilePath:f:\inetpub\custerr%windir%\system32\inetsrv\appcmd set config -section:httpErrors /[statusCode='500'].prefixLanguageFilePath:f:\inetpub\custerr%windir%\system32\inetsrv\appcmd set config -section:httpErrors /[statusCode='501'].prefixLanguageFilePath:f:\inetpub\custerr%windir%\system32\inetsrv\appcmd set config -section:httpErrors /[statusCode='502'].prefixLanguageFilePath:f:\inetpub\custerr
+WWWROOT and FTPROOT Locations
+reg add HKLM\Software\Microsoft\inetstp /v PathWWWRoot /t REG_SZ /d f:\inetpub\wwwroot
+reg add HKLM\Software\Microsoft\inetstp /v PathFTPRoot /t REG_SZ /d f:\inetpub\ftproot
+xcopy c:\inetpub f:\inetpub /E /O /I

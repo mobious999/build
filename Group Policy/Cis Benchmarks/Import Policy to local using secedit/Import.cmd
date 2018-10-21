@@ -1,0 +1,1 @@
+secedit /configure /db c:\windows\security\local.sdb /cfg c:\secpol.cfg /areas SECURITYPOLICY rm -force c:\secpol.cfg -confirm:$false
