@@ -1,1 +1,0 @@
-This is an export of all of the cis benchmarks for a 2008 r2 member server with level 1.
