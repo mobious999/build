@@ -1,11 +1,13 @@
 #requires -version 5.1
 <#
 .SYNOPSIS
-  This script can be used to (insert what it does here)
+  This script can be used to move computer accounts to another ou
 .DESCRIPTION
   
 .PARAMETER <Parameter_Name>
     List all parameters here
+    $destou
+    $filename
     $errorlog
     $logfile
     $logfolder
@@ -24,6 +26,7 @@
   Based on this article 
   https://blog.netwrix.com/2018/06/26/managing-ous-and-moving-their-objects-with-powershell/#Create%20OUs%20in%20an%20Active%20Directory%20Domain%20with%20PowerShell
 .EXAMPLE
+  .\movecomputersbatch -destou (ou to move the computers to) -filename (filename full path for the computerlist)
   To add error logging add the following parameters from below
   -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
 #>
@@ -31,15 +34,11 @@
 Param(
   [Parameter(Mandatory=$False)]
   [ValidateNotNull()]
-  [string]$parameter1,
+  [string]$destou,
 	
   [Parameter(Mandatory=$False)]
   [ValidateNotNull()]
-  [string]$parameter2,
-
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter3,
+  [string]$filename,
 
   [Parameter(Mandatory=$False)]
   [string]$errorlog,
@@ -50,6 +49,8 @@ Param(
   [Parameter(Mandatory=$False)]
   [System.IO.FileInfo]$logfolder
 )
+
+$computers = Get-Content C:\Temp\Computers.txt
 
 #capture where the script is being run from
 $ScriptDir = Split-Path $script:MyInvocation.MyCommand.Path
@@ -63,7 +64,11 @@ if ($logfolder){
 }
 
 Try {
-  
+  # Path to where the computer accounts must be moved to
+  ForEach( $computer in $computers){
+    Get-ADComputer $computer |
+    Move-ADObject -TargetPath $destou
+  } 
 }
  
 Catch {
