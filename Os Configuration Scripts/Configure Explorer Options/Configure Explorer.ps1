@@ -1,21 +1,122 @@
 #requires -version 5.1
 <#
 .SYNOPSIS
-  This script can be used to (insert what it does here)
+  This script can be used to configure explorer options
 .DESCRIPTION
   
 .PARAMETER <Parameter_Name>
-    List all parameters here
-    $errorlog
-    $logfile
-    $logfolder
+  List all parameters here
+  $Start_SearchFiles        - Don't slow down search by including all public folders     
+  $StartMenuAdminTools      - Show Administrative tools      
+  $ServerAdminUI            - if applied to the default profile in windows 7, the value 2 suppresses inclusion of the links from "UserAssist" (detailed explanation here) in the StartMenu and Taskbar for subsequently created profiles.    
+  $Hidden                   - Show hidden files and folders     
+  $ShowCompColor               
+  $HideFileExt              - Hide File extensions of known filetypes           
+  $DontPrettyPath           - Display correct file name capitalization         
+  $ShowInfoTip              - Disable info tips of icons on Desktop and Windows Explorer     
+  $HideIcons                - Hide desktop icons         
+  $MapNetDrvBtn                
+  $WebView                  - Use Web view for folders         
+  $Filter                      
+  $SuperHidden              - Display hidden files and folders          
+  $SeparateProcess          - Launch File Explorer in separate processes
+  $NoNetCrawling            - Prevent automatically locate file shares and printers             
+  $AutoCheckSelect          - Enable Check Boxes in File Explorer in Windows 10     
+  $IconsOnly                - Don't show thumbnails    
+  $ShowTypeOverlay          - Display file icon on thumbnails     
+  $ListviewAlphaSelect         
+  $ListviewShadow              
+  $TaskbarAnimations           
+  $StartMenuInit               
+  $Start_ShowMyGames           
+  $NavPaneShowAllFolders       
+  $NavPaneExpandToCurrentFolder
+  $AlwaysShowMenus               - Always show File Explorer menues   
+  $HideDrivesWithNoMedia         - Hide empty drives   
+  $ShowSuperHidden               - Show system files and folders   
+  $TaskbarSizeMove               - Unlocked Taskbar   
+  $DisablePreviewDesktop       
+  $TaskbarSmallIcons             - Small Taskbar icons    
+  $TaskbarGlomLevel            
+  $Start_PowerButtonAction     
+  $StartMenuFavorites          
+  $Start_ShowNetPlaces         
+  $Start_ShowRecentDocs        
+  $Start_ShowRun               
+  $Start_MinMFU                
+  $Start_JumpListItems         
+  $Start_AdminToolsRoot        
+  $ShowStatusBar                  - Show status bar  
+  $StoreAppsOnTaskbar          
+  $EnableStartMenu             
+  $ReindexedProfile            
+  $DontUsePowerShellOnWinX   
+  $FolderContentsInfoTip          - Display file size information in folder tips
+  $HideMergeConflicts             - HideMergeConflicts
+  $PersistBrowsers                - Don't restore folder windows at logon
+  $ShowEncryptCompressedColor     - Show encrypted and/or compressed files in color
+  $ShowPreviewHandlers            - Show preview handlers in preview pane
+  $ShowSyncProviderNotifications  - Don't show sync provider notifications
+  $SharingWizardOn                - Use the sharing wizard
+  $errorlog
+  $logfile
+  $logfolder
 .INPUTS
-    List all inputs here
-    $errorlog - the log that gets created on a trapped error
-    $logfile - the log of the action and completion
-    $logfolder - where the logs get created
+  List all inputs here
+  $Start_SearchFiles           
+  $StartMenuAdminTools         
+  $ServerAdminUI               
+  $Hidden                      
+  $ShowCompColor               
+  $HideFileExt                 
+  $DontPrettyPath              
+  $ShowInfoTip                 
+  $HideIcons                   
+  $MapNetDrvBtn                
+  $WebView                     
+  $Filter                      
+  $SuperHidden                 
+  $SeparateProcess 
+  $NoNetCrawling            
+  $AutoCheckSelect             
+  $IconsOnly                   
+  $ShowTypeOverlay             
+  $ListviewAlphaSelect         
+  $ListviewShadow              
+  $TaskbarAnimations           
+  $StartMenuInit               
+  $Start_ShowMyGames           
+  $NavPaneShowAllFolders       
+  $NavPaneExpandToCurrentFolder
+  $AlwaysShowMenus             
+  $HideDrivesWithNoMedia       
+  $ShowSuperHidden             
+  $TaskbarSizeMove             
+  $DisablePreviewDesktop       
+  $TaskbarSmallIcons           
+  $TaskbarGlomLevel            
+  $Start_PowerButtonAction     
+  $StartMenuFavorites          
+  $Start_ShowNetPlaces         
+  $Start_ShowRecentDocs        
+  $Start_ShowRun               
+  $Start_MinMFU                
+  $Start_JumpListItems         
+  $Start_AdminToolsRoot        
+  $ShowStatusBar               
+  $StoreAppsOnTaskbar          
+  $EnableStartMenu             
+  $ReindexedProfile            
+  $DontUsePowerShellOnWinX     
+  $FolderContentsInfoTip      
+  $HideMergeConflicts
+  $PersistBrowsers
+  $SharingWizardOn
+  $errorlog - the log that gets created on a trapped error
+  $logfile - the log of the action and completion
+  $logfolder - where the logs get created
 .OUTPUTS
-    Standard logfiles if enabled
+   Standard logfiles if enabled
 .NOTES
   Version:        1.0
   Author:         Mark Quinn
