@@ -18,8 +18,11 @@ Windows powershell 5.1 preferred.
 Each script will be able to do error logging (default) but is not a requirement. 
 
 The option is there as a parameter for debugging if required.
+
+Each script has example files that you all you have to do is type get-help (scriptname) to see examples.
+
 ```
-for each script you can type get-help to see examples.
+
 
 ### Installing
 
@@ -39,7 +42,7 @@ Read through the descriptions all parameters are documented and as to how to run
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+Please feel free to comment and if you see opportunities for improvement I welcome working with people.
 
 ## Authors
 
