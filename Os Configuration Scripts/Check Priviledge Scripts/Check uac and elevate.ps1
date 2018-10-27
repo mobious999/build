@@ -1,43 +1,43 @@
-#requires -version 5.1
 <#
 .SYNOPSIS
-  This script can be used to (insert what it does here)
+  This script can be used to check and elevate the users uac permissions automatically.
+
 .DESCRIPTION
-  
+  The script can be used to check the uac elevation status and then elevate the user permissions to administrator level.
+
+  This script can be used for example only to demonstrate how to elevate there are no parameters or actions carried out.
+
 .PARAMETER <Parameter_Name>
-    List all parameters here
-    $errorlog
-    $logfile
-    $logfolder
+  List all parameters here
+  $errorlog
+  $logfile
+  $logfolder
+
 .INPUTS
-    List all inputs here
-    $errorlog - the log that gets created on a trapped error
-    $logfile - the log of the action and completion
-    $logfolder - where the logs get created
+  List all inputs here
+  $errorlog - the log that gets created on a trapped error
+  $logfile - the log of the action and completion
+  $logfolder - where the logs get created
+
 .OUTPUTS
-    
+  None
+
 .NOTES
   Version:        1.0
   Author:         Mark Quinn
   Creation Date:  9/30/2018
   Purpose/Change: Initial script development
-  Based on this article
-  https://ss64.com/ps/syntax-elevate.html
+
 .EXAMPLE
   To add error logging add the following parameters from below
   -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
+  
+.LINK
+  Based on this article
+  https://ss64.com/ps/syntax-elevate.html
 #>
 
 Param(
-  [Parameter(Mandatory=$False,Position=1)]
-  [string]$parameter1,
-	
-  [Parameter(Mandatory=$False)]
-  [string]$parameter2,
-
-  [Parameter(Mandatory=$False)]
-  [string]$parameter3,
-
   [Parameter(Mandatory=$False)]
   [string]$errorlog,
 

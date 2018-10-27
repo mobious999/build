@@ -1,9 +1,14 @@
-#requires -version 5.1
 <#
 .SYNOPSIS
-  This script can be used to (insert what it does here)
+  This script can be used to configure crash dump settings
 .DESCRIPTION
-  
+  The script will adjust the crash dump settings to the value specified in the parameter
+  None 0x0
+  Complete memory dump  0x1
+  Kernel memory dump    0x2
+  Small memory dump     0x3
+  Automatic memory dump 0x7
+
 .PARAMETER <Parameter_Name>
     List all parameters here
     $crashdumplevel
@@ -23,15 +28,12 @@
   Author:         Mark Quinn
   Creation Date:  9/30/2018
   Purpose/Change: Initial script development
+.LINK
   Based on this article 
   https://blogs.technet.microsoft.com/askcore/2012/09/12/windows-8-and-windows-server-2012-automatic-memory-dump/
-  None 0x0
-  Complete memory dump  0x1
-  Kernel memory dump    0x2
-  Small memory dump     0x3
-  Automatic memory dump 0x7
-  
+
 .EXAMPLE
+  .\configure crashdump -crashdumplevel (parameter from above)
   To add error logging add the following parameters from below
   -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
 #>

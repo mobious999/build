@@ -1,19 +1,19 @@
-#requires -version 5.1
 <#
 .SYNOPSIS
-  This script can be used to (insert what it does here)
+  This script can be used to change the powerplan of the device to any power plan specified
 .DESCRIPTION
-  
+  The script will adjust the power plan of the device to high power.
+
 .PARAMETER <Parameter_Name>
-    List all parameters here
-    $errorlog
-    $logfile
-    $logfolder
+  List all parameters here
+  $errorlog
+  $logfile
+  $logfolder
 .INPUTS
-    List all inputs here
-    $errorlog - the log that gets created on a trapped error
-    $logfile - the log of the action and completion
-    $logfolder - where the logs get created
+  List all inputs here
+  $errorlog - the log that gets created on a trapped error
+  $logfile - the log of the action and completion
+  $logfolder - where the logs get created
 .OUTPUTS
     Standard logfiles if enabled
 .NOTES
@@ -28,18 +28,6 @@
 #>
 
 Param(
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter1,
-	
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter2,
-
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter3,
-
   [Parameter(Mandatory=$False)]
   [string]$errorlog,
 
@@ -62,9 +50,8 @@ if ($logfolder){
 }
 
 Try {
-  $HighPerfPowerPlan = gwmi win32_powerplan -namespace root\cimv2\power -computername localhost -filter "elementname='High performance'" ;
+  $HighPerfPowerPlan = Get-WmiObject win32_powerplan -namespace root\cimv2\power -computername localhost -filter "elementname='High performance'" ;
   $HighPerfPowerPlan.Activate()
-  #Get-CimInstance -N rootcimv2power -Class win32_PowerPlan -Filter "ElementName ='High Performance'" | Invoke-CimMethod -MethodName Activate > $null
 }
  
 Catch {

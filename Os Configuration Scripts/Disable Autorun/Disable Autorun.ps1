@@ -1,4 +1,3 @@
-#requires -version 5.1
 <#
 .SYNOPSIS
   This script can be used to Disable Autorun for all users
@@ -28,11 +27,6 @@
   -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
 #>
 
-#static variables no parameters required
-$registry1 = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\policies\Explorer"
-$registry2 = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\policies\Explorer"
-$autorunfile =  "REGISTRY::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\IniFileMapping\AutoRun.inf"
-
 #capture where the script is being run from
 $ScriptDir = Split-Path $script:MyInvocation.MyCommand.Path
 
@@ -54,6 +48,10 @@ Param(
   [string]$logfolder
 )
 
+#static variables no parameters required
+$registry1 = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\policies\Explorer"
+$registry2 = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\policies\Explorer"
+$autorunfile =  "REGISTRY::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\IniFileMapping\AutoRun.inf"
 
 Try {
   Set-ItemProperty $registry1 -Name NoDriveTypeAutorun -Type DWord -Value 0xFF  
@@ -81,7 +79,7 @@ Try {
     write-host "No error log specified outputting errors to the screen " 
     Write-host "The exception that occured is " $myerror
     Write-host "The error message is " $errormessage
-    Write-host "The item that fialed is " $faileditem
+    Write-host "The item that failed is " $faileditem
   }
     Break
  }
@@ -128,7 +126,7 @@ Try {
     write-host "No error log specified outputting errors to the screen " 
     Write-host "The exception that occured is " $myerror
     Write-host "The error message is " $errormessage
-    Write-host "The item that fialed is " $faileditem
+    Write-host "The item that failed is " $faileditem
   }
     Break
  }
@@ -177,7 +175,7 @@ Try {
     write-host "No error log specified outputting errors to the screen " 
     Write-host "The exception that occured is " $myerror
     Write-host "The error message is " $errormessage
-    Write-host "The item that fialed is " $faileditem
+    Write-host "The item that failed is " $faileditem
   }
     Break
 }

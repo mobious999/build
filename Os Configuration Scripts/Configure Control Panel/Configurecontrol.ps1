@@ -1,9 +1,12 @@
-#requires -version 5.1
 <#
 .SYNOPSIS
   This script can be used to configure control panel views
 .DESCRIPTION
-  
+  This script is used to enable the option for control panel to change the view to classic view
+  Options for this are
+  If the ForceClassicControlPanel value does not exist at all, Control Panel follows the regular Windows default of opening to the last view you used.
+  If the ForceClassicControlPanel value is set to 0, Control Panel will always open to the category view.
+  If the ForceClassicControlPanel value is set to 1, Control Panel will always open to the icon view. It will show large or small icons depending on how you left the window the last time you used it.
 .PARAMETER <Parameter_Name>
     List all parameters here
     $errorlog
@@ -23,6 +26,7 @@
   Purpose/Change: Initial script development
   Based on this article 
 .EXAMPLE
+  .\configurecontrolpanel -ForceClassicControlanel = (value)
   To add error logging add the following parameters from below
   -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
 #>
@@ -30,15 +34,7 @@
 Param(
   [Parameter(Mandatory=$False)]
   [ValidateNotNull()]
-  [string]$parameter1,
-	
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter2,
-
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter3,
+  [int]$ForceClassicControlPanel,
 
   [Parameter(Mandatory=$False)]
   [string]$errorlog,
@@ -62,7 +58,7 @@ if ($logfolder){
 }
 
 Try {
-  Set-ItemProperty "HKCU:\software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name ForceClassicControlPanel -value 1 -Force 
+  Set-ItemProperty "HKCU:\software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name ForceClassicControlPanel -value $ForceClassicControlPanel -Force 
 }
  
 Catch {

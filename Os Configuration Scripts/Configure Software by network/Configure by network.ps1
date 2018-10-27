@@ -1,4 +1,3 @@
-#requires -version 5.1
 <#
 .SYNOPSIS
   This script can be used to (insert what it does here)
@@ -28,18 +27,6 @@
 #>
 
 Param(
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter1,
-	
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter2,
-
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter3,
-
   [Parameter(Mandatory=$False)]
   [string]$errorlog,
 

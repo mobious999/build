@@ -1,9 +1,8 @@
-#requires -version 2
 <#
 .SYNOPSIS
-   This script can be used configur snmp services
+   This script can be used add the desktop experiece to a windows host
 .DESCRIPTION
-  This script will ip the first network card that is connected to the network
+  The script just adds the feature without any interaction
 .PARAMETER <Parameter_Name>
     Required fields none
 .INPUTS
@@ -15,6 +14,7 @@
   Author:         Spiceworks
   Creation Date:  9/30/2018
   Purpose/Change: Initial script development
+.LINK
   This script is based on this article
   https://community.spiceworks.com/topic/389336-script-to-install-snmp-and-change-community-name
 .EXAMPLE

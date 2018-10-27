@@ -1,9 +1,10 @@
-#requires -version 5.1
 <#
 .SYNOPSIS
   This script can be used to set the powreshell gallery to trusted
 .DESCRIPTION
+  The powershell gallery can be used for importing modules and updating help files which can be useful.
   
+  The script sets the gallery to trusted.
 .PARAMETER <Parameter_Name>
     List all parameters here
     $errorlog
@@ -23,11 +24,16 @@
   Purpose/Change: Initial script development
   Based on this article 
 .EXAMPLE
+  .\ttrustpowershellgallery -policy (trusted)
   To add error logging add the following parameters from below
   -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
 #>
 
 Param(
+  [Parameter(Mandatory=$true)]
+  [ValidateNotNull()]
+  [string]$policy,
+
   [Parameter(Mandatory=$False)]
   [string]$errorlog,
 
@@ -50,7 +56,7 @@ if ($logfolder){
 }
 
 Try {
-  Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+  Set-PSRepository -Name PSGallery -InstallationPolicy $policy
 }
  
 Catch {
@@ -75,7 +81,7 @@ Catch {
     write-host "No error log specified outputting errors to the screen " 
     Write-host "The exception that occured is " $myerror
     Write-host "The error message is " $errormessage
-    Write-host "The item that fialed is " $faileditem
+    Write-host "The item that failed is " $faileditem
   }
     Break
 }

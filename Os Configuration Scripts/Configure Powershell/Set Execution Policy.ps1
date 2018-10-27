@@ -1,15 +1,18 @@
-#requires -version 2
 <#
 .SYNOPSIS
   This script can be used set the powershell ExecutionPolicy
 .DESCRIPTION
-  
+  The Script can use 1 of the four execution policies
+  Restricted - No scripts can be run. Windows PowerShell can be used only in interactive mode.
+  AllSigned - Only scripts signed by a trusted publisher can be run.
+  RemoteSigned - Downloaded scripts must be signed by a trusted publisher before they can be run.
+  Unrestricted - No restrictions; all scripts can be run.  
 .PARAMETER <Parameter_Name>
-    Required fields (policy)
-    List all parameters here
-    $errorlog
-    $logfile
-    $logfolder
+  Required fields (policy)
+  List all parameters here
+  $errorlog
+  $logfile
+  $logfolder
 .INPUTS
     only the policy that you want to change to is required
 .OUTPUTS
@@ -23,6 +26,9 @@
   
 .EXAMPLE
   Copy the file to the host and begin the Configuration
+  .\set execution policy -policy (see values in description)
+  To add error logging add the following parameters from below
+  -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
 #>
 
 Param(

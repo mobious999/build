@@ -1,9 +1,15 @@
-#requires -version 5.1
 <#
 .SYNOPSIS
   This script can be used to set the setting adjust for best performance
 .DESCRIPTION
-  
+  The script runs and configures the system without any parameters other than the visualfx settings which set the "adjust for best performance option"
+  The available options are
+  Let Windows Choose: 
+  setting = 0
+  Adjust for Best Appearance:
+  setting = 1
+  Adjust for Best Performance:
+  setting = 2
 .PARAMETER <Parameter_Name>
     List all parameters here
     $VisualFXSetting
@@ -25,12 +31,7 @@
   Purpose/Change: Initial script development
   Based on this article 
 .EXAMPLE
-  Let Windows Choose: 
-  setting = 0
-  Adjust for Best Appearance:
-  setting = 1
-  Adjust for Best Performance:
-  setting = 2
+  .\adjust for best performance -visualfxsetting (setting)
   To add error logging add the following parameters from below
   -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
 #>

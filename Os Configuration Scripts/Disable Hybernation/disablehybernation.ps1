@@ -1,4 +1,3 @@
-#requires -version 5.1
 <#
 .SYNOPSIS
   This script can be used to (insert what it does here)
@@ -75,7 +74,7 @@ Catch {
     write-host "No error log specified outputting errors to the screen " 
     Write-host "The exception that occured is " $myerror
     Write-host "The error message is " $errormessage
-    Write-host "The item that fialed is " $faileditem
+    Write-host "The item that failed is " $faileditem
   }
     Break
 }

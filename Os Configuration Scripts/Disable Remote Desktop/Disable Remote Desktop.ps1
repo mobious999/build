@@ -1,9 +1,8 @@
-#requires -version 5.1
 <#
 .SYNOPSIS
   This script can be used to Disable remote desktop
 .DESCRIPTION
-  
+  Remote desktop and network level authentication can be configured through this script.
 .PARAMETER <Parameter_Name>
     List all parameters here
     $errorlog
@@ -77,7 +76,7 @@ Catch {
     write-host "No error log specified outputting errors to the screen " 
     Write-host "The exception that occured is " $myerror
     Write-host "The error message is " $errormessage
-    Write-host "The item that fialed is " $faileditem
+    Write-host "The item that failed is " $faileditem
   }
     Break
 }
@@ -126,7 +125,7 @@ Catch {
     write-host "No error log specified outputting errors to the screen " 
     Write-host "The exception that occured is " $myerror
     Write-host "The error message is " $errormessage
-    Write-host "The item that fialed is " $faileditem
+    Write-host "The item that failed is " $faileditem
   }
   Break
 }
@@ -175,7 +174,7 @@ elseif ([string]::IsNullOrWhiteSpace($Errorlog))
   write-host "No error log specified outputting errors to the screen " 
   Write-host "The exception that occured is " $myerror
   Write-host "The error message is " $errormessage
-  Write-host "The item that fialed is " $faileditem
+  Write-host "The item that failed is " $faileditem
 }
   Break
 }

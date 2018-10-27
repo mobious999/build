@@ -1,4 +1,3 @@
-#requires -version 5.1
 <#
 .SYNOPSIS
   This script can be used to enable or disable uac

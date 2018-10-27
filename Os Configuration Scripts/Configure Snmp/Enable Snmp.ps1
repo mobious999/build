@@ -1,4 +1,3 @@
-#requires -version 5.1
 <#
 .SYNOPSIS
   This script can be used to configure Snmp
@@ -6,28 +5,28 @@
   
 .PARAMETER <Parameter_Name>
   List all parameters here
-  $syscontact
-  $syslocation
-  $sysservices
-  $enableauthtraps
-  $manager1
-  $manager2
-  $manager3
-  $trapreceiver1
-  $trapreceiver2
-  $trapreceiver3
-  $trapreceiver4
-  $communitystring
+  $syscontact                 The person to contact for the system
+  $syslocation                The rack location of the device
+  $sysservices                Enables Physical Service, Applications Service, Datalink and subnetwork Service, Internet Service, End to End Service
+  $enableauthtraps            (enables or disables snmp authentaction traps - better to leave disabled)
+  $manager1                   The snmp managers of the device
+  $manager2                   The snmp managers of the device
+  $manager3                   The snmp managers of the device
+  $trapreceiver1              The designated snmp trap receiver(s)
+  $trapreceiver2              The designated snmp trap receiver(s)
+  $trapreceiver3              The designated snmp trap receiver(s)
+  $trapreceiver4              The designated snmp trap receiver(s)
+  $communitystring            The snmp community string for the configuration
   $communitystringsecurity
   $errorlog
   $logfile
   $logfolder
 .INPUTS
   List all inputs here
-  $syscontact  # The person to contact for the system
-  $syslocation # The rack location of the device
-  $sysservices # Enables Physical Service, Applications Service, Datalink and subnetwork Service, Internet Service, End to End Service
-  $enableauthtraps (enables or disables snmp authentaction traps - better to leave disabled)
+  $syscontact
+  $syslocation # 
+  $sysservices # 
+  $enableauthtraps
   $manager1 
   $manager2
   $manager3

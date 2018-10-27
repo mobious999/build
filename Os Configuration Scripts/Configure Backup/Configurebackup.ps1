@@ -1,9 +1,9 @@
-#requires -version 2
 <#
 .SYNOPSIS
-   This script can be used configure windows server backup
+   This script can be used configure windows server backup (add the specific role / feature)
 .DESCRIPTION
-  This script configure windows server backup
+  This script configure windows server backup on any windows host
+
 .PARAMETER <Parameter_Name>
     Required fields none
 .INPUTS
@@ -15,6 +15,7 @@
   Author:         Spiceworks
   Creation Date:  9/30/2018
   Purpose/Change: Initial script development
+.LINK
   This script is based on this article
   https://community.spiceworks.com/topic/389336-script-to-install-snmp-and-change-community-name
 .EXAMPLE

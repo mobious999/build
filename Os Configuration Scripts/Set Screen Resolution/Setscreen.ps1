@@ -1,23 +1,22 @@
-#requires -version 5.1
 <#
 .SYNOPSIS
   This script can be used to Set the screen resolution
 .DESCRIPTION
-  
+  The script will set the screen resolution to whatever resolution is input on the commandline.  
 .PARAMETER <Parameter_Name>
-    List all parameters here
-    $width
-    $height
-    $errorlog
-    $logfile
-    $logfolder
+  List all parameters here
+  $width
+  $height
+  $errorlog
+  $logfile
+  $logfolder
 .INPUTS
-    List all inputs here
-    $errorlog - the log that gets created on a trapped error
-    $logfile - the log of the action and completion
-    $logfolder - where the logs get created
+  List all inputs here
+  $errorlog - the log that gets created on a trapped error
+  $logfile - the log of the action and completion
+  $logfolder - where the logs get created
 .OUTPUTS
-    Standard logfiles if enabled
+  Standard logfiles if enabled
 .NOTES
   Version:        1.0
   Author:         Mark Quinn
@@ -86,7 +85,7 @@ Catch {
     write-host "No error log specified outputting errors to the screen " 
     Write-host "The exception that occured is " $error
     Write-host "The error message is " $errormessage
-    Write-host "The item that fialed is " $faileditem
+    Write-host "The item that failed is " $faileditem
   }
     Break
 }

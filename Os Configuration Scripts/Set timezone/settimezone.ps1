@@ -1,9 +1,10 @@
-#requires -version 5.1
 <#
 .SYNOPSIS
   This script can be used to set the timezone
 .DESCRIPTION
-  
+  The script will set the timezone to whichever time zone you pick
+
+  Please be aware this must be a standard timezone 
 .PARAMETER <Parameter_Name>
     List all parameters here
     $timezone
@@ -24,6 +25,10 @@
   Creation Date:  9/30/2018
   Purpose/Change: Initial script development
   Based on this article 
+.LINK
+  Refer to this link for all time zones
+  https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/default-time-zones
+  
 .EXAMPLE
   .\settimezone.ps1 -timezone "Eastern Standard Time"
   To add error logging add the following parameters from below
@@ -82,7 +87,7 @@ Catch {
     write-host "No error log specified outputting errors to the screen " 
     Write-host "The exception that occured is " $error
     Write-host "The error message is " $errormessage
-    Write-host "The item that fialed is " $faileditem
+    Write-host "The item that failed is " $faileditem
   }
     Break
 }

@@ -1,9 +1,11 @@
-#requires -version 5.1
 <#
 .SYNOPSIS
-  This script can be used to (insert what it does here)
+  This script can be used to change the cdrom drive to driveletter z:
 .DESCRIPTION
+  This script will set the cdrom drive to z:
   
+  The intent is that when drives are added to the system that the cdrom drive be the last drive letter.
+
 .PARAMETER <Parameter_Name>
     List all parameters here
     $errorlog
