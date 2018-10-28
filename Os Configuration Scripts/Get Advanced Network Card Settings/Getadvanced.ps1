@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-  This script can be used to (insert what it does here)
+  This script can be used to get windows network card advanced properties
 
 .DESCRIPTION
-  
+  This script can be used to look at the advanced properties
 .PARAMETER <Parameter_Name>
   List all parameters here
   $errorlog
@@ -34,18 +34,6 @@
 
 Param(
   [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter1,
-	
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter2,
-
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter3,
-
-  [Parameter(Mandatory=$False)]
   [string]$errorlog,
 
   [Parameter(Mandatory=$False)]
@@ -67,7 +55,7 @@ if ($logfolder){
 }
 
 Try {
-  
+  Get-NetAdapter -physical | where-object status -eq 'up' | Get-NetAdapterAdvancedProperty   
 }
  
 Catch {

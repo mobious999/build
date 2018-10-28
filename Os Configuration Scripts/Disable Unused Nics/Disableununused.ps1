@@ -1,8 +1,16 @@
 <#
 .SYNOPSIS
-  This script can be used to (insert what it does here)
+  This script can be used to disable unused nics
 
 .DESCRIPTION
+  This script will disable any disconnected nics
+
+  The script uses wmi to check the network connection status
+
+  The states for the network card are
+  Disconnected (0)
+  Connecting (1)
+  Connected (2)
   
 .PARAMETER <Parameter_Name>
   List all parameters here
@@ -25,7 +33,8 @@
   Creation Date:  9/30/2018
   Purpose/Change: Initial script development
   Based on this article 
-
+.LINK
+  https://docs.microsoft.com/en-us/windows/desktop/cimwin32prov/win32-networkadapter
 .EXAMPLE
   To add error logging add the following parameters from below
   -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
@@ -33,18 +42,6 @@
 #>
 
 Param(
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter1,
-	
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter2,
-
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter3,
-
   [Parameter(Mandatory=$False)]
   [string]$errorlog,
 
@@ -67,7 +64,7 @@ if ($logfolder){
 }
 
 Try {
-  
+  get-wmiobject win32_networkadapter -filter "netconnectionstatus = 0" | Disable-NetAdapter -Confirm:$false
 }
  
 Catch {
@@ -94,7 +91,7 @@ Catch {
     Write-host "The error message is " $errormessage
     Write-host "The item that failed is " $faileditem
   }
-  Break
+    Break
 }
 
 Finally {

@@ -21,8 +21,10 @@
   Author:         Mark Quinn
   Creation Date:  9/30/2018
   Purpose/Change: Initial script development
+.LINK 
   Based on this article 
   http://johnklann.com/how-to-completely-disable-user-account-control-uac/
+  
 .EXAMPLE
   .\configuac -uac 1
   A reboot is required for changes to take effect

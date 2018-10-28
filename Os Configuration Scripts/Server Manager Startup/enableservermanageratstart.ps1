@@ -1,9 +1,10 @@
 <#
 .SYNOPSIS
-  This script can be used to (insert what it does here)
+  This script can be used to set server manager to not start at login
 
 .DESCRIPTION
-  
+  A quick stript to disable server manager at logon no inputs required.
+
 .PARAMETER <Parameter_Name>
   List all parameters here
   $errorlog
@@ -24,7 +25,10 @@
   Author:         Mark Quinn
   Creation Date:  9/30/2018
   Purpose/Change: Initial script development
-  Based on this article 
+
+.LINK
+  Based on this article
+  https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-servermanager-svrmgrnc-donotopenservermanageratlogon
 
 .EXAMPLE
   To add error logging add the following parameters from below
@@ -33,18 +37,6 @@
 #>
 
 Param(
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter1,
-	
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter2,
-
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter3,
-
   [Parameter(Mandatory=$False)]
   [string]$errorlog,
 
@@ -67,7 +59,7 @@ if ($logfolder){
 }
 
 Try {
-  
+  New-ItemProperty -Path HKCU:\Software\Microsoft\ServerManager -Name DoNotOpenServerManagerAtLogon -PropertyType DWORD -Value "0x0" –Force  
 }
  
 Catch {
@@ -94,7 +86,7 @@ Catch {
     Write-host "The error message is " $errormessage
     Write-host "The item that failed is " $faileditem
   }
-  Break
+    Break
 }
 
 Finally {

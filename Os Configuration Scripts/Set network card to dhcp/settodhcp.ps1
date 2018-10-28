@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-  This script can be used to (insert what it does here)
+  This script can be used to revert a network card to dhcp
 
 .DESCRIPTION
-  
+  Can be used to revert a network card back to using dhcp.
 .PARAMETER <Parameter_Name>
   List all parameters here
   $errorlog
@@ -34,18 +34,6 @@
 
 Param(
   [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter1,
-	
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter2,
-
-  [Parameter(Mandatory=$False)]
-  [ValidateNotNull()]
-  [string]$parameter3,
-
-  [Parameter(Mandatory=$False)]
   [string]$errorlog,
 
   [Parameter(Mandatory=$False)]
@@ -67,7 +55,15 @@ if ($logfolder){
 }
 
 Try {
-  
+  Get-NetAdapter -physical | where-object status -eq 'up' | Set-NetIPInterface -Dhcp Enabled
+  Get-NetAdapter -physical | where-object status -eq 'up' | Remove-NetRoute -AddressFamily IPv4 -Confirm:$false
+  Get-NetAdapter -physical | where-object status -eq 'up' | Set-DnsClientServerAddress -ResetServerAddresses
+  Get-NetAdapter -physical | where-object status -eq 'up' | Set-DnsClientGlobalSetting -SuffixSearchList @('', '')
+  Get-NetAdapter -physical | where-object status -eq 'up' | Set-DNSClient -ResetConnectionSpecificSuffix
+  Get-NetAdapter -physical | where-object status -eq 'up' | Set-DNSClient –RegisterThisConnectionsAddress $False -UseSuffixWhenRegistering $false
+  Get-WmiObject -Class Win32_NetworkAdapterConfiguration -Filter "IPEnabled=TRUE" | Foreach-Object{ $_.SetWINSServer('','') }
+  #Get-WmiObject -Class Win32_NetworkAdapterConfiguration -Filter "IPEnabled=TRUE" | Foreach-Object{ $_.SetDNSServerSearchOrder()}
+  #netsh winsock reset
 }
  
 Catch {
