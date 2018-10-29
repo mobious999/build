@@ -8,7 +8,7 @@
   $syscontact                 The person to contact for the system
   $syslocation                The rack location of the device
   $sysservices                Enables Physical Service, Applications Service, Datalink and subnetwork Service, Internet Service, End to End Service
-  $enableauthtraps            (enables or disables snmp authentaction traps - better to leave disabled)
+  $enableauthtraps            (enables or disables snmp authentaction traps - better to leave disabled set to 0 or 1)
   $manager1                   The snmp managers of the device
   $manager2                   The snmp managers of the device
   $manager3                   The snmp managers of the device
@@ -17,7 +17,7 @@
   $trapreceiver3              The designated snmp trap receiver(s)
   $trapreceiver4              The designated snmp trap receiver(s)
   $communitystring            The snmp community string for the configuration
-  $communitystringsecurity
+  $communitystringsecurity    The type of snmp that's installed (read only / read write see below)
   $errorlog
   $logfile
   $logfolder
@@ -66,11 +66,11 @@
   .\enable snmp -manager1 (managername) -manager2 (managername) -manager3 (managername) -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
 #>
 Param(
-  [Parameter(Mandatory=$False)]
+  [Parameter(Mandatory=$True)]
   [ValidateNotNull()]
   [string]$syscontact,
 
-  [Parameter(Mandatory=$False)]
+  [Parameter(Mandatory=$True)]
   [ValidateNotNull()]
   [string]$syslocation,
 
@@ -110,13 +110,13 @@ Param(
   [ValidateNotNull()]
   [string]$trapreceiver4,
 
-  [Parameter(Mandatory=$False)]
+  [Parameter(Mandatory=$True)]
   [ValidateNotNull()]
   [string]$communitystring,
 
-  [Parameter(Mandatory=$False)]
+  [Parameter(Mandatory=$True)]
   [ValidateNotNull()]
-  [string]$parameter1,
+  [string]$communitystringsecurity,
 
   [Parameter(Mandatory=$False)]
   [string]$errorlog,
@@ -152,7 +152,7 @@ Try {
   #setting the syscontact
   $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\RFC1156Agent" 
   #create the new community string path in the registry
-  New-ItemProperty -Path $registryPath -Name "sysContact" -Value $syscontact
+  Set-ItemProperty -Path $registryPath -Name "sysContact" -Value $syscontact
 }
  
 Catch {
@@ -179,7 +179,7 @@ Catch {
     Write-host "The error message is " $errormessage
     Write-host "The item that failed is " $faileditem
   }
-    Break
+  Break
 }
 
 Finally {
@@ -204,7 +204,7 @@ Try {
   #setting the syslocation
   $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\RFC1156Agent" 
   #create the new community string path in the registry
-  New-ItemProperty -Path $registryPath -Name "sysLocation" -Value $sysLocation
+  Set-ItemProperty -Path $registryPath -Name "sysLocation" -Value $sysLocation
 }
  
 Catch {
@@ -231,7 +231,7 @@ Catch {
     Write-host "The error message is " $errormessage
     Write-host "The item that failed is " $faileditem
   }
-    Break
+  Break
 }
 
 Finally {
@@ -254,8 +254,13 @@ Finally {
 Try {
   #setting the sysservices
   $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\RFC1156Agent" 
-  #create the new community string path in the registry
-  New-ItemProperty -Path $registryPath -Name "sysServices" -Value $sysServices
+  if (!$sysservices){
+    #variable is null leaving things set to default
+  }
+  else { 
+    #create the new community string path in the registry
+    Set-ItemProperty -Path $registryPath -Name "sysServices" -Value $sysServices
+  }
 }
  
 Catch {
@@ -282,7 +287,7 @@ Catch {
     Write-host "The error message is " $errormessage
     Write-host "The item that failed is " $faileditem
   }
-    Break
+  Break
 }
 
 Finally {
@@ -306,8 +311,13 @@ Finally {
 Try {
     #map the community name above to a new registry key
     $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\TrapConfiguration\$communityname" 
-    #create the new community string path in the registry
-    New-ItemProperty -Path $registryPath -Name 1 -Value $trapreceiver1 
+    if (!$trapreceiver1){
+      #option not enabled so will not be set
+    }
+    else {
+      #create the new community string path in the registry
+      New-ItemProperty -Path $registryPath -Name 1 -Value $trapreceiver1 
+    }
 }
 
 Catch {
@@ -358,8 +368,13 @@ Finally {
 Try {
     #map the community name above to a new registry key
     $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\TrapConfiguration\$communityname" 
-    #create the new community string path in the registry
-    New-ItemProperty -Path $registryPath -Name 1 -Value $trapreceiver2
+    if (!$trapreceiver2){
+      #option not set moving on
+    }
+    else {
+      #create the new community string path in the registry
+      New-ItemProperty -Path $registryPath -Name 1 -Value $trapreceiver2
+    }
 }
 
 Catch {
@@ -410,9 +425,13 @@ Finally {
 Try {
     #map the community name above to a new registry key
     $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\TrapConfiguration\$communityname" 
-    #create the new community string path in the registry
-    New-ItemProperty -Path $registryPath -Name 1 -Value $trapreceiver3
-    #now to add the traps
+    if (!$trapreceiver3){
+      #option not set moving on
+    }  
+    else {
+      #create the new community string path in the registry
+      New-ItemProperty -Path $registryPath -Name 1 -Value $trapreceiver3
+    }
 }
 
 Catch {
@@ -462,8 +481,13 @@ Finally {
 Try {
     #map the community name above to a new registry key
     $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\TrapConfiguration\$communityname" 
-    #create the new community string path in the registry
-    New-ItemProperty -Path $registryPath -Name 1 -Value $trapreceiver4
+    if (!$trapreceiver4){
+      #option not set moving on
+    }
+    else {
+      #create the new community string path in the registry
+      New-ItemProperty -Path $registryPath -Name 1 -Value $trapreceiver4
+    }
 }
 
 Catch {
@@ -510,7 +534,7 @@ Finally {
   }
 }
 
-#configure communities and the type
+#configure the community and the type (see above for the type of snmp)
 Try {
     #map the community name above to a new registry key
     $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\ValidCommunities\$communityname" 
@@ -565,8 +589,13 @@ Finally {
 Try {
   #configure the permitted managers
   $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\PermittedManagers" 
-  #create the new community string path in the registry
-  New-ItemProperty -Path $registryPath -Name $manager -Value 1
+  if (!$manager){
+    #nothing set moving on
+  }
+  else {
+    #create the new community string path in the registry
+    New-ItemProperty -Path $registryPath -Name $manager -Value 1
+  }
 }
 
 Catch {
@@ -616,8 +645,13 @@ elseif ([string]::IsNullOrWhiteSpace($logfile))
 Try {
   #configure the permitted managers
   $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\PermittedManagers" 
-  #create the new community string path in the registry
-  New-ItemProperty -Path $registryPath -Name $manager1 -Value 2
+  if (!$manager1){
+    #nothing set moving on
+  }
+  else {
+    #create the new community string path in the registry
+    New-ItemProperty -Path $registryPath -Name $manager1 -Value 2
+  }
 }
 
 Catch {
@@ -667,8 +701,13 @@ elseif ([string]::IsNullOrWhiteSpace($logfile))
 Try {
   #configure the permitted managers
   $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\PermittedManagers" 
-  #create the new community string path in the registry
-  New-ItemProperty -Path $registryPath -Name $manager2 -Value 3
+  if (!$manager2){
+    #nothing set moving on
+  }
+  else {}
+    #create the new community string path in the registry
+    New-ItemProperty -Path $registryPath -Name $manager2 -Value 3
+  }
 }
 
 Catch {
@@ -713,5 +752,60 @@ elseif ([string]::IsNullOrWhiteSpace($logfile))
   #Write-host "logfile not specified"
   write-host "The command completed successfully"   
 }
+}
+
+Try {
+  #configure whether snmp authentication traps are enabled or disabled
+  $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters" 
+  #create the new community string path in the registry
+  if (!$enableauthtraps){
+  }
+  Else {
+    Set-ItemProperty -Path $registryPath -Name -Value $enableauthtraps -PropertyType DWORD -Force | Out-Null
+  }
+}
+ 
+Catch {
+  $myerror = $_.Exception 
+  $errorMessage = $_.Exception.Message
+  $FailedItem = $_.Exception.ItemName 
+
+  if (!$logfolder -and $errorlog)
+  {
+    Write-Host "No Error log folder specified logging will be created in the directory where the script is run from"
+    Add-Content $scriptdir\$errorlog "The error is " $myError
+    Add-Content $scriptdir\$errorlog "The error message is " $ErrorMessage
+    Add-Content $scriptdir\$errorlog "The item that failed is " $FailedItem        
+  } elseif ($logfolder -and $errorlog) 
+  {
+    Add-Content $logfolder\$errorlog "The error is " $myError
+    Add-Content $logfolder\$errorlog "The error message is " $ErrorMessage
+    Add-Content $logfolder\$errorlog "The item that failed is " $FailedItem        
+  }
+  elseif ([string]::IsNullOrWhiteSpace($Errorlog)) 
+  {
+    write-host "No error log specified outputting errors to the screen " 
+    Write-host "The exception that occured is " $myerror
+    Write-host "The error message is " $errormessage
+    Write-host "The item that failed is " $faileditem
+  }
+  Break
+}
+
+Finally {
+  if (!$logfolder -and $logfile) 
+  {
+    #Write-host "No logfolder specified logs will be created locally if requested"   	
+    Add-Content $ScriptDir\$logfile "The action completed succesfully."   
+  }
+  elseif ($logfolder -and $logfile)
+  {
+    Add-Content $logfolder\$logfile "The action completed succesfully."   
+  }
+  elseif ([string]::IsNullOrWhiteSpace($logfile)) 
+  {
+    #Write-host "logfile not specified"
+    write-host "The command completed successfully"   
+  }
 }
 
