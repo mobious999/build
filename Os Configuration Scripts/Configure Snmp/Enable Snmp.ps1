@@ -60,10 +60,14 @@
   #$notify = "2"
   #$readwrite = "8"
   #$readcreate = "16"
-  
+
+  To enable authentication traps from any host
+  Delete hklm:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\PermittedManagers (sets to accept from any host)
+ 
 .EXAMPLE
   To add error logging add the following parameters from below
   .\enable snmp -manager1 (managername) -manager2 (managername) -manager3 (managername) -errorlog (logfilename) -logfile (logfilename) -logfolder (path to the log files)
+  
 #>
 Param(
   [Parameter(Mandatory=$True)]
@@ -74,7 +78,7 @@ Param(
   [ValidateNotNull()]
   [string]$syslocation,
 
-  [Parameter(Mandatory=$False)]
+  [Parameter(Mandatory=$false)]
   [ValidateNotNull()]
   [string]$sysservices,
 
@@ -118,13 +122,13 @@ Param(
   [ValidateNotNull()]
   [string]$communitystringsecurity,
 
-  [Parameter(Mandatory=$False)]
+  [Parameter(Mandatory=$false)]
   [string]$errorlog,
 
-  [Parameter(Mandatory=$False)]
+  [Parameter(Mandatory=$false)]
   [string]$logfile,
 
-  [Parameter(Mandatory=$False)]
+  [Parameter(Mandatory=$false)]
   [string]$logfolder
 )
 
@@ -310,13 +314,16 @@ Finally {
  #create first trap receiver
 Try {
     #map the community name above to a new registry key
-    $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\TrapConfiguration\$communityname" 
+    $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\TrapConfiguration" 
     if (!$trapreceiver1){
       #option not enabled so will not be set
     }
     else {
       #create the new community string path in the registry
-      New-ItemProperty -Path $registryPath -Name 1 -Value $trapreceiver1 
+      New-Item -Path $registryPath -Name $communitystring �Force
+      #create the new trap receiver
+      $registrypath1 = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\TrapConfiguration\$communitystring"
+      New-ItemProperty -Path $registryPath1 -Name 1 -Value $trapreceiver1 -PropertyType string -Force
     }
 }
 
@@ -367,13 +374,13 @@ Finally {
 #create second trap receiver
 Try {
     #map the community name above to a new registry key
-    $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\TrapConfiguration\$communityname" 
+    $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\TrapConfiguration" 
     if (!$trapreceiver2){
-      #option not set moving on
+      #option not enabled so will not be set
     }
     else {
-      #create the new community string path in the registry
-      New-ItemProperty -Path $registryPath -Name 1 -Value $trapreceiver2
+      #create the new trap receiver
+      New-ItemProperty -Path $registryPath1 -Name 2 -Value $trapreceiver2 -PropertyType string -Force
     }
 }
 
@@ -424,13 +431,13 @@ Finally {
 #create third trap receiver
 Try {
     #map the community name above to a new registry key
-    $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\TrapConfiguration\$communityname" 
+    $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\TrapConfiguration" 
     if (!$trapreceiver3){
-      #option not set moving on
-    }  
+      #option not enabled so will not be set
+    }
     else {
-      #create the new community string path in the registry
-      New-ItemProperty -Path $registryPath -Name 1 -Value $trapreceiver3
+      #create the new trap receiver
+      New-ItemProperty -Path $registryPath1 -Name 3 -Value $trapreceiver3 -PropertyType string -Force
     }
 }
 
@@ -480,13 +487,13 @@ Finally {
 #create fourth trap receiver
 Try {
     #map the community name above to a new registry key
-    $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\TrapConfiguration\$communityname" 
+    $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\TrapConfiguration" 
     if (!$trapreceiver4){
-      #option not set moving on
+      #option not enabled so will not be set
     }
     else {
-      #create the new community string path in the registry
-      New-ItemProperty -Path $registryPath -Name 1 -Value $trapreceiver4
+      #create the new trap receiver
+      New-ItemProperty -Path $registryPath1 -Name 4 -Value $trapreceiver4 -PropertyType string -Force
     }
 }
 
@@ -539,7 +546,7 @@ Try {
     #map the community name above to a new registry key
     $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\ValidCommunities\$communityname" 
     #create the new community string path in the registry
-    New-ItemProperty -Path $registryPath -Name $communitystring -Value $communitystringsecurity
+    New-ItemProperty -Path $registryPath -Name $communitystring -Value $communitystringsecurity -PropertyType dword -force
 }
 
 Catch {
@@ -588,13 +595,13 @@ Finally {
 
 Try {
   #configure the permitted managers
-  $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\PermittedManagers" 
+  $managerregistryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\PermittedManagers" 
   if (!$manager){
     #nothing set moving on
   }
   else {
     #create the new community string path in the registry
-    New-ItemProperty -Path $registryPath -Name $manager -Value 1
+    New-ItemProperty -Path $managerregistryPath -Name 1 -Value $manager -PropertyType String -Force
   }
 }
 
@@ -644,13 +651,12 @@ elseif ([string]::IsNullOrWhiteSpace($logfile))
 
 Try {
   #configure the permitted managers
-  $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\PermittedManagers" 
   if (!$manager1){
     #nothing set moving on
   }
   else {
     #create the new community string path in the registry
-    New-ItemProperty -Path $registryPath -Name $manager1 -Value 2
+    New-ItemProperty -Path $managerregistryPath -Name 2 -Value $manager1 -PropertyType String -Force
   }
 }
 
@@ -700,13 +706,12 @@ elseif ([string]::IsNullOrWhiteSpace($logfile))
 
 Try {
   #configure the permitted managers
-  $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\SNMP\Parameters\PermittedManagers" 
   if (!$manager2){
     #nothing set moving on
   }
-  else {}
+  else {
     #create the new community string path in the registry
-    New-ItemProperty -Path $registryPath -Name $manager2 -Value 3
+    New-ItemProperty -Path $managerregistryPath -Name 3 -Value $manager2 -PropertyType String -Force
   }
 }
 
@@ -761,7 +766,7 @@ Try {
   if (!$enableauthtraps){
   }
   Else {
-    Set-ItemProperty -Path $registryPath -Name -Value $enableauthtraps -PropertyType DWORD -Force | Out-Null
+    New-ItemProperty -Path $registryPath -Name EnableAuthenticationTraps -Value $enableauthtraps -PropertyType DWORD -Force | Out-Null
   }
 }
  
