@@ -22,8 +22,6 @@ The option is there as a parameter for debugging if required.
 Each script has example files that you all you have to do is type get-help (scriptname) to see examples.
 
 ```
-
-
 ### Installing
 
 You can copy to the host to and run the script with whatever parameters are required to complete the task your trying to accompliahs
