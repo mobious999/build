@@ -53,5 +53,5 @@ These scripts are open and free to use for whatever you need
 ## Acknowledgments
 
 * Msdn
-* Finally getting motivated to get off my arse.
+* Various web sources - see the links in the scripts
 
