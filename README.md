@@ -22,8 +22,6 @@ The option is there as a parameter for debugging if required.
 Each script has example files that you all you have to do is type get-help (scriptname) to see examples.
 
 ```
-
-
 ### Installing
 
 You can copy to the host to and run the script with whatever parameters are required to complete the task your trying to accompliahs
@@ -55,5 +53,5 @@ These scripts are open and free to use for whatever you need
 ## Acknowledgments
 
 * Msdn
-* Finally getting motivated to get off my arse.
+* Various web sources - see the links in the scripts
 
