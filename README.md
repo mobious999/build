@@ -1,4 +1,4 @@
-# Windows Operating Building Scripts
+# Windows Operating System Build Scripts
 
 This collection of scripts can be used to build and configure Microsoft Windows os types to any specification that is required.
 
